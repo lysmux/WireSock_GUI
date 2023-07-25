@@ -1,6 +1,6 @@
 import flet
 
-from views.TunnelsView import TunnelsView
+from views.tunnels import TunnelsView
 
 
 def main(page: flet.Page):

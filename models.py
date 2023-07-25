@@ -21,5 +21,6 @@ class Peer:
 
 @dataclasses.dataclass
 class Tunnel:
-    interface: Interface
-    peer: Peer
+    name: str = "Tunnel"
+    interface: Interface = Interface()
+    peer: Peer = Peer()

@@ -38,7 +38,7 @@ def load_config(path: pathlib.Path) -> Tunnel:
             case "allowedapps":
                 peer_config["allowed_apps"] = list(map(lambda x: x.strip(), value.split(",")))
 
-    return Tunnel(interface=Interface(**interface_config), peer=Peer(**peer_config))
-
-
-print(load_config(pathlib.Path("conf")))
+    return Tunnel(name=path.stem,
+                  interface=Interface(**interface_config),
+                  peer=Peer(**peer_config)
+                  )
