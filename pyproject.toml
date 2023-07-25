@@ -8,6 +8,7 @@ packages = [{include = "wiresock_gui"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+flet = "^0.8.4"
 
 
 [build-system]
