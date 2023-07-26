@@ -26,6 +26,9 @@ class TunnelsView(flet.UserControl):
                 self.tunnels_column,
                 self.file_picker,
                 flet.ElevatedButton(text="Add tunnel",
+                                    style=flet.ButtonStyle(
+                                        color=flet.colors.GREEN
+                                    ),
                                     on_click=lambda _: self.file_picker.pick_files(allowed_extensions=["conf"]))
             ]),
             flet.VerticalDivider(width=9, thickness=3),
@@ -92,8 +95,18 @@ class TunnelsView(flet.UserControl):
                 flet.Text(value=tunnel.peer.allowed_apps),
             ]),
 
-            flet.ElevatedButton(text="Edit tunnel", on_click=self.on_tunnel_edit, data=tunnel),
-            flet.ElevatedButton(text="Delete tunnel", on_click=self.on_tunnel_delete, data=tunnel)
+            flet.ElevatedButton(text="Edit tunnel",
+                                style=flet.ButtonStyle(
+                                    color=flet.colors.LIGHT_BLUE
+                                ),
+                                on_click=self.on_tunnel_edit,
+                                data=tunnel),
+            flet.ElevatedButton(text="Delete tunnel",
+                                style=flet.ButtonStyle(
+                                    color=flet.colors.RED
+                                ),
+                                on_click=self.on_tunnel_delete,
+                                data=tunnel)
         ]
 
         self.info_column.update()
