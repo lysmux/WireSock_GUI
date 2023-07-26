@@ -1,15 +1,13 @@
-
 import shutil
 from pathlib import Path
 
 import flet
 
 import wiresock_manager
-from models import Tunnel
 from utils import app_data_dir
 
 
-class TunnelsView(flet.UserControl):
+class ListView(flet.UserControl):
     def __init__(self):
         super().__init__()
         self.expand = True
@@ -118,7 +116,8 @@ class TunnelsView(flet.UserControl):
         self.update_tunnels()
 
     def on_tunnel_edit(self, event: flet.ControlEvent):
-        pass
+        tunnel = event.control.data
+        self.page.go(f"/edit/{tunnel.name}")
 
     def on_tunnel_delete(self, event: flet.ControlEvent):
         tunnel = event.control.data
