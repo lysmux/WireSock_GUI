@@ -1,25 +1,25 @@
-import dataclasses
+from dataclasses import dataclass, field
 
 
-@dataclasses.dataclass
+@dataclass
 class Interface:
-    private_key: str = ""
-    address: list[str] = dataclasses.field(default_factory=list)
-    dns: list[str] = dataclasses.field(default_factory=list)
-    mtu: int = 1280
+    private_key: str = field(default="")
+    address: list[str] = field(default_factory=list)
+    dns: list[str] = field(default_factory=list)
+    mtu: int = field(default=1280)
 
 
-@dataclasses.dataclass
+@dataclass
 class Peer:
-    public_key: str = ""
-    endpoint: str = ""
-    allowed_ips: list[str] = dataclasses.field(default_factory=list)
-    disallowed_ips: list[str] = dataclasses.field(default_factory=list)
-    allowed_apps: list[str] = dataclasses.field(default_factory=list)
+    public_key: str = field(default="")
+    endpoint: str = field(default="")
+    allowed_ips: list[str] = field(default_factory=list)
+    disallowed_ips: list[str] = field(default_factory=list)
+    allowed_apps: list[str] = field(default_factory=list)
 
 
-@dataclasses.dataclass
+@dataclass
 class Tunnel:
-    name: str = "Tunnel"
+    name: str = field(default="Tunnel")
     interface: Interface = Interface()
     peer: Peer = Peer()
