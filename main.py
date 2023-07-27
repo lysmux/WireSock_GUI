@@ -16,7 +16,8 @@ def main(page: flet.Page):
             flet.View(
                 "/",
                 [
-                    ListView()
+                    # ListView()
+                    EditView("pc")
                 ],
             )
         )

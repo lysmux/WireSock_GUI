@@ -1,12 +1,15 @@
 import configparser
-import pathlib
 
 from models import Tunnel, Interface, Peer
+from utils import app_data_dir
 
 
-def load_config(path: pathlib.Path) -> Tunnel:
+def load_config(config_name: str) -> Tunnel:
+    configs_path = app_data_dir("configs")
+    config_name = config_name.replace(".conf", "")
+
     config = configparser.ConfigParser()
-    config.read(path)
+    config.read(configs_path / f"{config_name}.conf")
 
     if not config.has_section("Interface") or not config.has_section("Peer"):
         raise
@@ -38,7 +41,7 @@ def load_config(path: pathlib.Path) -> Tunnel:
             case "allowedapps":
                 peer_config["allowed_apps"] = list(map(lambda x: x.strip(), value.split(",")))
 
-    return Tunnel(name=path.stem,
+    return Tunnel(name=config_name,
                   interface=Interface(**interface_config),
                   peer=Peer(**peer_config)
                   )

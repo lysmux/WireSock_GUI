@@ -1,12 +1,11 @@
 import dataclasses
-import typing
 
 
 @dataclasses.dataclass
 class Interface:
     private_key: str = ""
-    address: typing.Union[str, list[str]] = ""
-    dns: typing.Union[str, list[str]] = ""
+    address: list[str] = dataclasses.field(default_factory=list)
+    dns: list[str] = dataclasses.field(default_factory=list)
     mtu: int = 1280
 
 
