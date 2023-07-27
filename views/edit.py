@@ -38,10 +38,16 @@ class EditView(flet.UserControl):
 
     def build(self):
         # todo: fix scroll
-        # todo: add return button
 
         return flet.Column(
             [
+                flet.ElevatedButton(text="Назад",
+                                    icon=flet.icons.KEYBOARD_ARROW_LEFT,
+                                    style=flet.ButtonStyle(
+                                        color=flet.colors.LIGHT_BLUE
+                                    ),
+                                    on_click=lambda _: self.page.go("/")),
+
                 flet.Text(value=f"Tunnel: {self.tunnel.name}",
                           weight=flet.FontWeight.BOLD,
                           size=40),
