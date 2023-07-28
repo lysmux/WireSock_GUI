@@ -3,7 +3,7 @@ from os import getenv
 from pathlib import Path
 
 
-def app_data_dir(*paths):
+def get_appdata_dir(*paths):
     if sys.platform.startswith("win"):
         os_path = getenv("LOCALAPPDATA")
     elif sys.platform.startswith("darwin"):

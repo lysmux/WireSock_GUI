@@ -1,11 +1,11 @@
 import configparser
 
 from models import Tunnel, Interface, Peer
-from utils import app_data_dir
+from utils import get_appdata_dir
 
 
 def load_config(config_name: str) -> Tunnel:
-    configs_path = app_data_dir("configs")
+    configs_path = get_appdata_dir("configs")
     config = configparser.ConfigParser()
     config.read(configs_path / f"{config_name}.conf")
 
@@ -50,7 +50,7 @@ def load_config(config_name: str) -> Tunnel:
 
 
 def save_config(tunnel: Tunnel):
-    configs_path = app_data_dir("configs")
+    configs_path = get_appdata_dir("configs")
     config = configparser.ConfigParser()
 
     config.add_section("Interface")

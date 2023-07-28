@@ -4,7 +4,7 @@ from pathlib import Path
 import flet
 
 import wiresock_manager
-from utils import app_data_dir
+from utils import get_appdata_dir
 
 
 class ListView(flet.UserControl):
@@ -34,7 +34,7 @@ class ListView(flet.UserControl):
         ], vertical_alignment=flet.CrossAxisAlignment.START)
 
     def update_tunnels(self):
-        configs_path = app_data_dir("configs")
+        configs_path = get_appdata_dir("configs")
 
         self.tunnels_column.controls.clear()
         for tunnel_path in configs_path.glob("*.conf"):
@@ -119,7 +119,7 @@ class ListView(flet.UserControl):
 
     def on_tunnel_add(self, event: flet.FilePickerResultEvent):
         file = event.files[0]
-        configs_path = app_data_dir("configs")
+        configs_path = get_appdata_dir("configs")
         shutil.copy(file.path, configs_path)
         self.update_tunnels()
 
@@ -129,7 +129,7 @@ class ListView(flet.UserControl):
 
     def on_tunnel_delete(self, event: flet.ControlEvent):
         tunnel = event.control.data
-        configs_path = app_data_dir("configs")
+        configs_path = get_appdata_dir("configs")
 
         Path(configs_path, f"{tunnel.name}.conf").unlink()
         self.update_tunnels()
