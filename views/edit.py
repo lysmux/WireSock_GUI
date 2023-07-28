@@ -1,13 +1,13 @@
 import flet
 
-import wiresock_manager
+import config_manager
 
 
 class EditView(flet.UserControl):
     def __init__(self, tunnel_name: str):
         super().__init__()
 
-        self.tunnel = wiresock_manager.load_config(tunnel_name)
+        self.tunnel = config_manager.load_config(tunnel_name)
 
         self.tf_private_key = flet.TextField(value=self.tunnel.interface.private_key)
         self.tf_address = flet.TextField(value=str(self.tunnel.interface.address),
@@ -199,6 +199,6 @@ class EditView(flet.UserControl):
             self.tunnel.peer.allowed_apps = self.tf_allowed_apps.data
             self.tunnel.peer.persistent_keepalive = int(self.tf_persist.value)
 
-            wiresock_manager.save_config(self.tunnel)
+            config_manager.save_config(self.tunnel)
 
             self.page.go("/")

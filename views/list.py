@@ -3,7 +3,7 @@ from pathlib import Path
 
 import flet
 
-import wiresock_manager
+import config_manager
 from utils import get_appdata_dir
 
 
@@ -38,7 +38,7 @@ class ListView(flet.UserControl):
 
         self.tunnels_column.controls.clear()
         for tunnel_path in configs_path.glob("*.conf"):
-            tunnel = wiresock_manager.load_config(tunnel_path.stem)
+            tunnel = config_manager.load_config(tunnel_path.stem)
             self.tunnels_column.controls.append(
                 flet.TextButton(text=tunnel.name, on_click=self.on_tunnel_click, data=tunnel)
             )
