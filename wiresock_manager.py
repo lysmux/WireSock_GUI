@@ -68,5 +68,5 @@ def save_config(tunnel: Tunnel):
     config.set("Peer", "AllowedApps", ",".join(tunnel.peer.allowed_apps))
     config.set("Peer", "PersistentKeepalive", str(tunnel.peer.persistent_keepalive))
 
-    with open(configs_path / tunnel.name, "w") as config_file:
+    with open(configs_path / f"{tunnel.name}.conf", "w") as config_file:
         config.write(config_file)

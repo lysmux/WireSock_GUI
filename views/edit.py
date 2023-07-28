@@ -198,3 +198,7 @@ class EditView(flet.UserControl):
             self.tunnel.peer.disallowed_ips = self.tf_disallowed_ips.data
             self.tunnel.peer.allowed_apps = self.tf_allowed_apps.data
             self.tunnel.peer.persistent_keepalive = int(self.tf_persist.value)
+
+            wiresock_manager.save_config(self.tunnel)
+
+            self.page.go("/")
