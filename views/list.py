@@ -3,7 +3,7 @@ from pathlib import Path
 
 import flet
 
-import wiresock_manager
+import config_manager
 from utils import get_appdata_dir
 
 

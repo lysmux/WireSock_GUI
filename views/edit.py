@@ -1,6 +1,6 @@
 import flet
 
-import wiresock_manager
+import config_manager
 
 
 class EditView(flet.UserControl):
