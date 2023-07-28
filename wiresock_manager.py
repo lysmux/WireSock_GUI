@@ -6,8 +6,6 @@ from utils import app_data_dir
 
 def load_config(config_name: str) -> Tunnel:
     configs_path = app_data_dir("configs")
-    config_name = config_name.replace(".conf", "")
-
     config = configparser.ConfigParser()
     config.read(configs_path / f"{config_name}.conf")
 
@@ -45,3 +43,6 @@ def load_config(config_name: str) -> Tunnel:
                   interface=Interface(**interface_config),
                   peer=Peer(**peer_config)
                   )
+
+
+
