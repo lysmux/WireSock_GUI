@@ -47,3 +47,26 @@ def load_config(config_name: str) -> Tunnel:
                   interface=Interface(**interface_config),
                   peer=Peer(**peer_config)
                   )
+
+
+def save_config(tunnel: Tunnel):
+    configs_path = app_data_dir("configs")
+    config = configparser.ConfigParser()
+
+    config.add_section("Interface")
+    config.set("Interface", "PrivateKey", tunnel.interface.private_key)
+    config.set("Interface", "Address", ",".join(tunnel.interface.address))
+    config.set("Interface", "DNS", ",".join(tunnel.interface.dns))
+    config.set("Interface", "MTU", str(tunnel.interface.mtu))
+
+    config.add_section("Peer")
+    config.set("Peer", "PublicKey", tunnel.peer.public_key)
+    config.set("Peer", "PresharedKey ", tunnel.peer.pre_shared_key)
+    config.set("Peer", "Endpoint", tunnel.peer.endpoint)
+    config.set("Peer", "AllowedIPs", ",".join(tunnel.peer.allowed_ips))
+    config.set("Peer", "DisallowedIPs", ",".join(tunnel.peer.disallowed_ips))
+    config.set("Peer", "AllowedApps", ",".join(tunnel.peer.allowed_apps))
+    config.set("Peer", "PersistentKeepalive", str(tunnel.peer.persistent_keepalive))
+
+    with open(configs_path / tunnel.name, "w") as config_file:
+        config.write(config_file)
