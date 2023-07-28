@@ -53,7 +53,7 @@ class ListView(flet.UserControl):
                       weight=flet.FontWeight.BOLD,
                       size=40),
             flet.Row([
-                flet.Text(value="PrivateKey:"),
+                flet.Text(value="Private key:"),
                 flet.Text(value=tunnel.interface.private_key),
             ]),
             flet.Row([
@@ -73,24 +73,32 @@ class ListView(flet.UserControl):
                       weight=flet.FontWeight.BOLD,
                       size=40),
             flet.Row([
-                flet.Text(value="PublicKey:"),
+                flet.Text(value="Public key:"),
                 flet.Text(value=tunnel.peer.public_key),
+            ]),
+            flet.Row([
+                flet.Text(value="Preshared key:"),
+                flet.Text(value=tunnel.peer.pre_shared_key),
             ]),
             flet.Row([
                 flet.Text(value="Endpoint:"),
                 flet.Text(value=tunnel.peer.endpoint),
             ]),
             flet.Row([
-                flet.Text(value="AllowedIPs:"),
+                flet.Text(value="Allowed IPs:"),
                 flet.Text(value=tunnel.peer.allowed_ips),
             ]),
             flet.Row([
-                flet.Text(value="DisallowedIPs:"),
+                flet.Text(value="Disallowed IPs:"),
                 flet.Text(value=tunnel.peer.disallowed_ips),
             ]),
             flet.Row([
-                flet.Text(value="AllowedApps:"),
+                flet.Text(value="Allowed apps:"),
                 flet.Text(value=tunnel.peer.allowed_apps),
+            ]),
+            flet.Row([
+                flet.Text(value="Persistence keepalive:"),
+                flet.Text(value=tunnel.peer.persistent_keepalive),
             ]),
 
             flet.ElevatedButton(text="Edit tunnel",

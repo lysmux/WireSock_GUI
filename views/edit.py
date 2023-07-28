@@ -16,9 +16,10 @@ class EditView(flet.UserControl):
         self.tf_dns = flet.TextField(value=str(self.tunnel.interface.dns),
                                      on_focus=self.on_list_field_focus,
                                      data=self.tunnel.interface.dns)
-        self.tf_mtu = flet.TextField(value=str(self.tunnel.interface.mtu))
+        self.tf_mtu = flet.TextField(value=str(self.tunnel.interface.mtu), hint_text="(optional)")
 
         self.tf_public_key = flet.TextField(value=self.tunnel.peer.public_key)
+        self.tf_pre_shared_key = flet.TextField(value=self.tunnel.peer.pre_shared_key, hint_text="(optional)")
         self.tf_endpoint = flet.TextField(value=self.tunnel.peer.endpoint)
         self.tf_allowed_ips = flet.TextField(value=str(self.tunnel.peer.allowed_ips),
                                              on_focus=self.on_list_field_focus,
@@ -29,6 +30,7 @@ class EditView(flet.UserControl):
         self.tf_allowed_apps = flet.TextField(value=str(self.tunnel.peer.allowed_apps),
                                               on_focus=self.on_list_field_focus,
                                               data=self.tunnel.peer.allowed_apps)
+        self.tf_persist = flet.TextField(value=str(self.tunnel.peer.persistent_keepalive), hint_text="(optional)")
 
         self.save_btn = flet.ElevatedButton(text="Save",
                                             style=flet.ButtonStyle(
@@ -88,6 +90,10 @@ class EditView(flet.UserControl):
                         self.tf_public_key
                     ]),
                     flet.Column([
+                        flet.Text(value="Preshared key"),
+                        self.tf_pre_shared_key
+                    ]),
+                    flet.Column([
                         flet.Text(value="Endpoint"),
                         self.tf_endpoint
                     ]),
@@ -102,6 +108,10 @@ class EditView(flet.UserControl):
                     flet.Column([
                         flet.Text(value="Allowed apps"),
                         self.tf_allowed_apps
+                    ]),
+                    flet.Column([
+                        flet.Text(value="Persistence keepalive"),
+                        self.tf_persist
                     ]),
                 ],
                     max_extent=350,
@@ -166,10 +176,14 @@ class EditView(flet.UserControl):
                 field.error_text = "Can't be empty"
                 field.update()
 
-        if self.tf_mtu.value and not self.tf_mtu.value.isdigit():
-            has_error = True
-            self.tf_mtu.error_text = "Can be positive integer"
-            self.tf_mtu.update()
+        for field in [
+            self.tf_mtu,
+            self.tf_persist
+        ]:
+            if field.value and not field.value.isdigit():
+                has_error = True
+                field.error_text = "Can be positive integer"
+                field.update()
 
         if not has_error:
             self.tunnel.interface.private_key = self.tf_private_key.value
@@ -178,7 +192,9 @@ class EditView(flet.UserControl):
             self.tunnel.interface.mtu = int(self.tf_mtu.value)
 
             self.tunnel.peer.public_key = self.tf_public_key.value
+            self.tunnel.peer.pre_shared_key = self.tf_pre_shared_key.value
             self.tunnel.peer.endpoint = self.tf_endpoint.value
             self.tunnel.peer.allowed_ips = self.tf_allowed_ips.data
             self.tunnel.peer.disallowed_ips = self.tf_disallowed_ips.data
             self.tunnel.peer.allowed_apps = self.tf_allowed_apps.data
+            self.tunnel.peer.persistent_keepalive = int(self.tf_persist.value)

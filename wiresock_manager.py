@@ -30,6 +30,8 @@ def load_config(config_name: str) -> Tunnel:
         match key:
             case "publickey":
                 peer_config["public_key"] = value
+            case "preshared_key":
+                peer_config["pre_shared_key"] = value
             case "endpoint":
                 peer_config["endpoint"] = value
             case "allowedips":
@@ -38,11 +40,10 @@ def load_config(config_name: str) -> Tunnel:
                 peer_config["disallowed_ips"] = list(map(lambda x: x.strip(), value.split(",")))
             case "allowedapps":
                 peer_config["allowed_apps"] = list(map(lambda x: x.strip(), value.split(",")))
+            case "persistentkeepalive":
+                peer_config["persistent_keepalive"] = int(value)
 
     return Tunnel(name=config_name,
                   interface=Interface(**interface_config),
                   peer=Peer(**peer_config)
                   )
-
-
-

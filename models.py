@@ -12,10 +12,12 @@ class Interface:
 @dataclass
 class Peer:
     public_key: str = field(default="")
+    pre_shared_key: str = field(default="")
     endpoint: str = field(default="")
     allowed_ips: list[str] = field(default_factory=list)
     disallowed_ips: list[str] = field(default_factory=list)
     allowed_apps: list[str] = field(default_factory=list)
+    persistent_keepalive: int = field(default=25)
 
 
 @dataclass
