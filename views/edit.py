@@ -30,6 +30,9 @@ class EditView(flet.UserControl):
         self.tf_allowed_apps = flet.TextField(value=str(self.tunnel.peer.allowed_apps),
                                               on_focus=self.on_list_field_focus,
                                               data=self.tunnel.peer.allowed_apps)
+        self.tf_disallowed_apps = flet.TextField(value=str(self.tunnel.peer.disallowed_apps),
+                                                 on_focus=self.on_list_field_focus,
+                                                 data=self.tunnel.peer.disallowed_apps)
         self.tf_persist = flet.TextField(value=str(self.tunnel.peer.persistent_keepalive), hint_text="(optional)")
 
         self.save_btn = flet.ElevatedButton(text="Save",
@@ -106,6 +109,10 @@ class EditView(flet.UserControl):
                     flet.Column([
                         flet.Text(value="Allowed apps"),
                         self.tf_allowed_apps
+                    ]),
+                    flet.Column([
+                        flet.Text(value="Disallowed apps"),
+                        self.tf_disallowed_apps
                     ]),
                     flet.Column([
                         flet.Text(value="Persistence keepalive"),
@@ -194,6 +201,7 @@ class EditView(flet.UserControl):
             self.tunnel.peer.allowed_ips = self.tf_allowed_ips.data
             self.tunnel.peer.disallowed_ips = self.tf_disallowed_ips.data
             self.tunnel.peer.allowed_apps = self.tf_allowed_apps.data
+            self.tunnel.peer.disallowed_apps = self.tf_disallowed_apps.data
             self.tunnel.peer.persistent_keepalive = int(self.tf_persist.value)
 
             config_manager.save_config(self.tunnel)

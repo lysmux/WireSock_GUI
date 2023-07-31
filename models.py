@@ -17,6 +17,7 @@ class Peer:
     allowed_ips: list[str] = field(default_factory=list)
     disallowed_ips: list[str] = field(default_factory=list)
     allowed_apps: list[str] = field(default_factory=list)
+    disallowed_apps: list[str] = field(default_factory=list)
     persistent_keepalive: int = field(default=25)
 
 

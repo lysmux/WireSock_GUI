@@ -40,6 +40,8 @@ def load_config(config_name: str) -> Tunnel:
                 peer_config["disallowed_ips"] = list(map(lambda x: x.strip(), value.split(",")))
             case "allowedapps":
                 peer_config["allowed_apps"] = list(map(lambda x: x.strip(), value.split(",")))
+            case "disallowedapps":
+                peer_config["disallowed_apps"] = list(map(lambda x: x.strip(), value.split(",")))
             case "persistentkeepalive":
                 peer_config["persistent_keepalive"] = int(value)
 
@@ -66,6 +68,7 @@ def save_config(tunnel: Tunnel):
     config.set("Peer", "AllowedIPs", ",".join(tunnel.peer.allowed_ips))
     config.set("Peer", "DisallowedIPs", ",".join(tunnel.peer.disallowed_ips))
     config.set("Peer", "AllowedApps", ",".join(tunnel.peer.allowed_apps))
+    config.set("Peer", "DisallowedApps", ",".join(tunnel.peer.disallowed_apps))
     config.set("Peer", "PersistentKeepalive", str(tunnel.peer.persistent_keepalive))
 
     with open(configs_path / f"{tunnel.name}.conf", "w") as config_file:

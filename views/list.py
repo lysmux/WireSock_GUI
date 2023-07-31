@@ -97,6 +97,10 @@ class ListView(flet.UserControl):
                 flet.Text(value=tunnel.peer.allowed_apps),
             ], wrap=True),
             flet.Row([
+                flet.Text(value="Disallowed apps:"),
+                flet.Text(value=tunnel.peer.disallowed_apps),
+            ], wrap=True),
+            flet.Row([
                 flet.Text(value="Persistence keepalive:"),
                 flet.Text(value=tunnel.peer.persistent_keepalive),
             ], wrap=True),
