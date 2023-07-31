@@ -41,7 +41,7 @@ class EditView(flet.UserControl):
     def build(self):
         return flet.Column(
             [
-                flet.ElevatedButton(text="Назад",
+                flet.ElevatedButton(text="Back",
                                     icon=flet.icons.KEYBOARD_ARROW_LEFT,
                                     style=flet.ButtonStyle(
                                         color=flet.colors.LIGHT_BLUE
@@ -148,7 +148,7 @@ class EditView(flet.UserControl):
             title=flet.Text("Edit"),
             content=content,
             actions=[
-                flet.TextButton(text="Update", on_click=on_close_dlg)
+                flet.ElevatedButton(text="Update", on_click=on_close_dlg)
             ],
             on_dismiss=lambda _: self.save_btn.focus()
         )
