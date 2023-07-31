@@ -46,9 +46,16 @@ class ListView(flet.UserControl):
             self.tunnels_column.update()
 
     def on_tunnel_click(self, event: flet.ControlEvent):
+        event.control.focus()
         tunnel = event.control.data
 
         self.info_column.controls = [
+            flet.ElevatedButton(text="Activate",
+                                style=flet.ButtonStyle(
+                                    color=flet.colors.GREEN
+                                ),
+                                on_click=self.on_tunnel_state,
+                                data=tunnel),
             flet.Text(value="Interface:",
                       weight=flet.FontWeight.BOLD,
                       size=40),
@@ -138,3 +145,6 @@ class ListView(flet.UserControl):
         Path(configs_path, f"{tunnel.name}.conf").unlink()
         self.update_tunnels()
         self.info_column.clean()
+
+    def on_tunnel_state(self, event: flet.ControlEvent):
+        pass
