@@ -12,7 +12,7 @@ class ListView(flet.UserControl):
         super().__init__()
         self.expand = True
 
-        self.info_column = flet.Column()
+        self.info_column = flet.Column(scroll=flet.ScrollMode.AUTO, expand=True)
         self.tunnels_column = flet.Column(scroll=flet.ScrollMode.AUTO, expand=True)
         self.file_picker = flet.FilePicker(on_result=self.on_tunnel_add)
 
@@ -55,19 +55,19 @@ class ListView(flet.UserControl):
             flet.Row([
                 flet.Text(value="Private key:"),
                 flet.Text(value=tunnel.interface.private_key),
-            ]),
+            ], wrap=True),
             flet.Row([
                 flet.Text(value="Address:"),
                 flet.Text(value=tunnel.interface.address),
-            ]),
+            ], wrap=True),
             flet.Row([
                 flet.Text(value="DNS:"),
                 flet.Text(value=tunnel.interface.dns),
-            ]),
+            ], wrap=True),
             flet.Row([
                 flet.Text(value="MTU:"),
                 flet.Text(value=tunnel.interface.mtu),
-            ]),
+            ], wrap=True),
 
             flet.Text(value="Peer",
                       weight=flet.FontWeight.BOLD,
@@ -75,31 +75,31 @@ class ListView(flet.UserControl):
             flet.Row([
                 flet.Text(value="Public key:"),
                 flet.Text(value=tunnel.peer.public_key),
-            ]),
+            ], wrap=True),
             flet.Row([
                 flet.Text(value="Preshared key:"),
                 flet.Text(value=tunnel.peer.pre_shared_key),
-            ]),
+            ], wrap=True),
             flet.Row([
                 flet.Text(value="Endpoint:"),
                 flet.Text(value=tunnel.peer.endpoint),
-            ]),
+            ], wrap=True),
             flet.Row([
                 flet.Text(value="Allowed IPs:"),
                 flet.Text(value=tunnel.peer.allowed_ips),
-            ]),
+            ], wrap=True),
             flet.Row([
                 flet.Text(value="Disallowed IPs:"),
                 flet.Text(value=tunnel.peer.disallowed_ips),
-            ]),
+            ], wrap=True),
             flet.Row([
                 flet.Text(value="Allowed apps:"),
                 flet.Text(value=tunnel.peer.allowed_apps),
-            ]),
+            ], wrap=True),
             flet.Row([
                 flet.Text(value="Persistence keepalive:"),
                 flet.Text(value=tunnel.peer.persistent_keepalive),
-            ]),
+            ], wrap=True),
 
             flet.ElevatedButton(text="Edit tunnel",
                                 style=flet.ButtonStyle(

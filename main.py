@@ -18,7 +18,7 @@ def main(page: flet.Page):
                 [
                     ListView()
                     # EditView("pc")
-                ],
+                ]
             )
         )
         if template_route.match("/edit/:tunnel_name"):
@@ -28,6 +28,7 @@ def main(page: flet.Page):
                     [
                         EditView(template_route.tunnel_name)
                     ],
+                    scroll=flet.ScrollMode.AUTO
                 )
             )
         page.update()

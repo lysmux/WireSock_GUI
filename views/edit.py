@@ -39,8 +39,6 @@ class EditView(flet.UserControl):
                                             on_click=self.on_save)
 
     def build(self):
-        # todo: fix scroll
-
         return flet.Column(
             [
                 flet.ElevatedButton(text="Назад",
@@ -119,7 +117,6 @@ class EditView(flet.UserControl):
                     child_aspect_ratio=2.5),
                 self.save_btn
             ],
-            scroll=flet.ScrollMode.AUTO
         )
 
     def on_list_field_focus(self, event: flet.ControlEvent):
