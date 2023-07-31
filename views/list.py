@@ -129,6 +129,9 @@ class ListView(flet.UserControl):
         self.info_column.update()
 
     def on_tunnel_add(self, event: flet.FilePickerResultEvent):
+        if not event.files:
+            return
+
         file = event.files[0]
         configs_path = get_appdata_dir("configs")
         shutil.copy(file.path, configs_path)
