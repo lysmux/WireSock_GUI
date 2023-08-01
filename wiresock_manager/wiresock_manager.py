@@ -5,15 +5,13 @@ from wiresock_manager.wg_booster import WGBooster
 
 class WSManager:
     instance = None
+    current_tunnel = None
+    wg_booster = WGBooster()
 
     def __new__(cls):
         if cls.instance is None:
             cls.instance = super(WSManager, cls).__new__(cls)
         return cls.instance
-
-    def __init__(self):
-        self.wg_booster = WGBooster()
-        self._current_tunnel = None
 
     def connect_tunnel(self, tunnel: Tunnel) -> bool:
         configs_dir = get_configs_dir()
@@ -26,7 +24,7 @@ class WSManager:
             self.wg_booster.drop_tunnel()
             return False
 
-        self._current_tunnel = tunnel
+        self.current_tunnel = tunnel
         return True
 
     def disconnect_tunnel(self):
@@ -47,7 +45,3 @@ class WSManager:
                       estimated_loss=stat.estimated_loss,
                       estimated_rtt=stat.estimated_rtt,
                       )
-
-    @property
-    def current_tunnel(self) -> Tunnel:
-        return self._current_tunnel
