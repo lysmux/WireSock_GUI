@@ -147,6 +147,9 @@ class EditView(flet.UserControl):
             event.control.value = str(data)
             event.control.update()
 
+            dlg.open = False
+            self.page.update()
+
         content = flet.Column([
             flet.ElevatedButton(text="Add", on_click=on_field_add)
         ])
