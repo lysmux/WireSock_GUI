@@ -16,6 +16,7 @@ def get_configs_dir() -> Path:
 def load_config(config_name: str) -> Tunnel:
     configs_dir = get_configs_dir()
     config = configparser.ConfigParser()
+    config.optionxform = str
     config.read(configs_dir / f"{config_name}.conf")
 
     if not config.has_section("Interface") or not config.has_section("Peer"):
@@ -26,32 +27,32 @@ def load_config(config_name: str) -> Tunnel:
 
     for key, value in config.items("Interface"):
         match key:
-            case "privatekey":
+            case "PrivateKey":
                 interface_config["private_key"] = value
             case "address":
                 interface_config["address"] = list(map(lambda x: x.strip(), value.split(",")))
-            case "dns":
+            case "DNS":
                 interface_config["dns"] = list(map(lambda x: x.strip(), value.split(",")))
-            case "mtu":
+            case "MTU":
                 interface_config["mtu"] = int(value)
 
     for key, value in config.items("Peer"):
         match key:
-            case "publickey":
+            case "PublicKey":
                 peer_config["public_key"] = value
-            case "preshared_key":
+            case "PresharedKey":
                 peer_config["pre_shared_key"] = value
-            case "endpoint":
+            case "Endpoint":
                 peer_config["endpoint"] = value
-            case "allowedips":
+            case "AllowedIPs":
                 peer_config["allowed_ips"] = list(map(lambda x: x.strip(), value.split(",")))
-            case "disallowedips":
+            case "AisallowedIPs":
                 peer_config["disallowed_ips"] = list(map(lambda x: x.strip(), value.split(",")))
-            case "allowedapps":
+            case "AllowedApps":
                 peer_config["allowed_apps"] = list(map(lambda x: x.strip(), value.split(",")))
-            case "disallowedapps":
+            case "DisallowedApps":
                 peer_config["disallowed_apps"] = list(map(lambda x: x.strip(), value.split(",")))
-            case "persistentkeepalive":
+            case "PersistentKeepalive":
                 peer_config["persistent_keepalive"] = int(value)
 
     return Tunnel(name=config_name,
@@ -63,6 +64,7 @@ def load_config(config_name: str) -> Tunnel:
 def save_config(tunnel: Tunnel):
     configs_dir = get_configs_dir()
     config = configparser.ConfigParser()
+    config.optionxform = str
 
     config.add_section("Interface")
     config.set("Interface", "PrivateKey", tunnel.interface.private_key)
