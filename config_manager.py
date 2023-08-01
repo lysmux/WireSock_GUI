@@ -5,7 +5,7 @@ from pathlib import Path
 from models import Tunnel, Interface, Peer
 
 
-def get_configs_path() -> Path:
+def get_configs_dir() -> Path:
     appdata_path = getenv("LOCALAPPDATA")
     path = Path(appdata_path, "WireSock", "configs")
     path.mkdir(parents=True, exist_ok=True)
@@ -14,9 +14,9 @@ def get_configs_path() -> Path:
 
 
 def load_config(config_name: str) -> Tunnel:
-    configs_path = get_configs_path()
+    configs_dir = get_configs_dir()
     config = configparser.ConfigParser()
-    config.read(configs_path / f"{config_name}.conf")
+    config.read(configs_dir / f"{config_name}.conf")
 
     if not config.has_section("Interface") or not config.has_section("Peer"):
         raise
@@ -61,7 +61,7 @@ def load_config(config_name: str) -> Tunnel:
 
 
 def save_config(tunnel: Tunnel):
-    configs_path = get_configs_path()
+    configs_dir = get_configs_dir()
     config = configparser.ConfigParser()
 
     config.add_section("Interface")
@@ -80,5 +80,5 @@ def save_config(tunnel: Tunnel):
     config.set("Peer", "DisallowedApps", ",".join(tunnel.peer.disallowed_apps))
     config.set("Peer", "PersistentKeepalive", str(tunnel.peer.persistent_keepalive))
 
-    with open(configs_path / f"{tunnel.name}.conf", "w") as config_file:
+    with open(configs_dir / f"{tunnel.name}.conf", "w") as config_file:
         config.write(config_file)

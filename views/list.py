@@ -33,10 +33,10 @@ class ListView(flet.UserControl):
         ], vertical_alignment=flet.CrossAxisAlignment.START)
 
     def update_tunnels(self):
-        configs_path = config_manager.get_configs_path()
+        configs_dir = config_manager.get_configs_dir()
 
         self.tunnels_column.controls.clear()
-        for tunnel_path in configs_path.glob("*.conf"):
+        for tunnel_path in configs_dir.glob("*.conf"):
             tunnel = config_manager.load_config(tunnel_path.stem)
             self.tunnels_column.controls.append(
                 flet.TextButton(text=tunnel.name, on_click=self.on_tunnel_click, data=tunnel)
@@ -132,8 +132,8 @@ class ListView(flet.UserControl):
             return
 
         file = event.files[0]
-        configs_path = config_manager.get_configs_path()
-        shutil.copy(file.path, configs_path)
+        configs_dir = config_manager.get_configs_dir()
+        shutil.copy(file.path, configs_dir)
         self.update_tunnels()
 
     def on_tunnel_edit(self, event: flet.ControlEvent):
@@ -142,9 +142,9 @@ class ListView(flet.UserControl):
 
     def on_tunnel_delete(self, event: flet.ControlEvent):
         tunnel = event.control.data
-        configs_path = config_manager.get_configs_path()
+        configs_dir = config_manager.get_configs_dir()
 
-        Path(configs_path, f"{tunnel.name}.conf").unlink()
+        Path(configs_dir, f"{tunnel.name}.conf").unlink()
         self.update_tunnels()
         self.info_column.clean()
 
