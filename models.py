@@ -26,3 +26,12 @@ class Tunnel:
     name: str = field(default="Tunnel")
     interface: Interface = Interface()
     peer: Peer = Peer()
+
+
+@dataclass
+class WGStat:
+    time_since_last_handshake: int = field(default=0)
+    tx_bytes: int = field(default=0)
+    rx_bytes: int = field(default=0)
+    estimated_loss: float = field(default=0)
+    estimated_rtt: int = field(default=0)
