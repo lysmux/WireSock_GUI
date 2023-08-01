@@ -1,22 +1,23 @@
 from config_manager import get_configs_dir
-from models import WGStat
+from models import WGStat, Tunnel
 from wiresock_manager.wg_booster import WGBooster
 
 
-class Manager:
+class WSManager:
     instance = None
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls):
         if cls.instance is None:
-            cls.instance = super(Manager, cls).__new__(*args, **kwargs)
+            cls.instance = super(WSManager, cls).__new__(cls)
         return cls.instance
 
     def __init__(self):
         self.wg_booster = WGBooster()
+        self._current_tunnel = None
 
-    def connect_tunnel(self, config_name: str) -> bool:
+    def connect_tunnel(self, tunnel: Tunnel) -> bool:
         configs_dir = get_configs_dir()
-        config_path = configs_dir / f"{config_name}.conf"
+        config_path = configs_dir / f"{tunnel.name}.conf"
 
         if not self.wg_booster.create_tunnel(config_path.as_posix()):
             return False
@@ -25,6 +26,7 @@ class Manager:
             self.wg_booster.drop_tunnel()
             return False
 
+        self._current_tunnel = tunnel
         return True
 
     def disconnect_tunnel(self):
@@ -45,3 +47,7 @@ class Manager:
                       estimated_loss=stat.estimated_loss,
                       estimated_rtt=stat.estimated_rtt,
                       )
+
+    @property
+    def current_tunnel(self) -> Tunnel:
+        return self._current_tunnel

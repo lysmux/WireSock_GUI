@@ -1,11 +1,13 @@
-import os
-from ctypes import *
-from ctypes.wintypes import *
+import winreg
+from ctypes import Structure, c_long, c_ulong, c_float, c_int, c_wchar_p, c_bool, CFUNCTYPE, c_void_p, CDLL
+from ctypes.wintypes import HANDLE
 from enum import Enum
 from pathlib import Path
 
-WG_BOOSTER_PATH = Path(os.environ.get("ProgramFiles"), "WireSock VPN Client", "bin", "wgbooster.dll")
-wg_booster_lib = CDLL(WG_BOOSTER_PATH.as_posix())
+ws_location_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\NTKernelResources\\WinpkFilterForVPNClient")
+ws_location = winreg.QueryValueEx(ws_location_key, "InstallLocation")[0]
+wg_booster_path = Path(ws_location, "bin", "wgbooster.dll")
+wg_booster_lib = CDLL(wg_booster_path.as_posix())
 
 
 def logger(m):
