@@ -1,11 +1,20 @@
 import configparser
+from os import getenv
+from pathlib import Path
 
 from models import Tunnel, Interface, Peer
-from utils import get_appdata_dir
+
+
+def get_configs_path() -> Path:
+    appdata_path = getenv("LOCALAPPDATA")
+    path = Path(appdata_path, "WireSock", "configs")
+    path.mkdir(parents=True, exist_ok=True)
+
+    return path.expanduser()
 
 
 def load_config(config_name: str) -> Tunnel:
-    configs_path = get_appdata_dir("configs")
+    configs_path = get_configs_path()
     config = configparser.ConfigParser()
     config.read(configs_path / f"{config_name}.conf")
 
@@ -52,7 +61,7 @@ def load_config(config_name: str) -> Tunnel:
 
 
 def save_config(tunnel: Tunnel):
-    configs_path = get_appdata_dir("configs")
+    configs_path = get_configs_path()
     config = configparser.ConfigParser()
 
     config.add_section("Interface")
