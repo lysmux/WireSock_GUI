@@ -21,12 +21,12 @@ def main(page: flet.Page):
                 ]
             )
         )
-        if template_route.match("/edit/:tunnel_name"):
+        if template_route.match("/edit/:config_name"):
             page.views.append(
                 flet.View(
                     "/edit",
                     [
-                        EditView(template_route.tunnel_name)
+                        EditView(template_route.config_name)
                     ],
                     scroll=flet.ScrollMode.AUTO
                 )

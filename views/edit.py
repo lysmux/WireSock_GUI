@@ -4,10 +4,10 @@ import config_manager
 
 
 class EditView(flet.UserControl):
-    def __init__(self, tunnel_name: str):
+    def __init__(self, config_name: str):
         super().__init__()
 
-        self.tunnel = config_manager.load_config(tunnel_name)
+        self.tunnel = config_manager.load_config(config_name)
 
         self.tf_private_key = flet.TextField(value=self.tunnel.interface.private_key)
         self.tf_address = flet.TextField(value=str(self.tunnel.interface.address),
