@@ -4,6 +4,7 @@ from pathlib import Path
 import flet
 
 import config_manager
+from wiresock_manager.wiresock_manager import WSManager
 
 
 class ListView(flet.UserControl):
@@ -49,7 +50,7 @@ class ListView(flet.UserControl):
         tunnel = event.control.data
 
         self.info_column.controls = [
-            flet.ElevatedButton(text="Activate",
+            flet.ElevatedButton(text="Connect",
                                 style=flet.ButtonStyle(
                                     color=flet.colors.GREEN
                                 ),
@@ -149,4 +150,13 @@ class ListView(flet.UserControl):
         self.info_column.clean()
 
     def on_tunnel_state(self, event: flet.ControlEvent):
-        pass
+        wg_manager = WSManager()
+        tunnel = event.control.data
+
+        if wg_manager.current_tunnel == tunnel:
+            wg_manager.disconnect_tunnel()
+            event.control.text = "Connect"
+        else:
+            wg_manager.connect_tunnel(tunnel)
+            event.control.text = "Disconnect"
+        event.control.update()
