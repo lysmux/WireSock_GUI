@@ -10,10 +10,12 @@ class MainView(flet.Tabs):
         self.tabs = [
             flet.Tab(
                 text="List tunnels",
+                icon=flet.icons.LIST,
                 content=flet.Container(ListView(), padding=flet.padding.all(10))
             ),
             flet.Tab(
                 text="Logs",
+                icon=flet.icons.NOTES,
                 content=flet.Container(LoggerView(), padding=flet.padding.all(10))
             ),
         ]
