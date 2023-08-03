@@ -156,7 +156,9 @@ class ListView(flet.UserControl):
         if wg_manager.current_tunnel == tunnel:
             wg_manager.disconnect_tunnel()
             event.control.text = "Connect"
+            event.control.style.color = flet.colors.GREEN
         else:
             wg_manager.connect_tunnel(tunnel)
             event.control.text = "Disconnect"
+            event.control.style.color = flet.colors.RED
         event.control.update()
