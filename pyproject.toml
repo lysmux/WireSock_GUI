@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "wiresock-gui"
+name = "wiresock_gui"
 version = "0.1.0"
 description = "GUI for the WireSock console application"
 authors = ["KllRaz <kllraz@yandex.ru>"]
@@ -7,8 +7,9 @@ readme = "README.md"
 packages = [{include = "wiresock_gui"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.10,<3.13"
 flet = "^0.8.4"
+pyinstaller = "^5.13.0"
 
 
 [build-system]
