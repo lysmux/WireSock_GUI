@@ -2,12 +2,11 @@ import flet
 from flet_core import TemplateRoute
 
 from views.edit import EditView
-from views.list import ListView
+from views.main import MainView
 
 
 def main(page: flet.Page):
     page.title = "WireSock"
-
     def route_change(route):
         template_route = TemplateRoute(route.route)
 
@@ -16,9 +15,9 @@ def main(page: flet.Page):
             flet.View(
                 "/",
                 [
-                    ListView()
-                    # EditView("pc")
-                ]
+                    MainView()
+                ],
+                padding=flet.padding.all(0)
             )
         )
         if template_route.match("/edit/:config_name"):

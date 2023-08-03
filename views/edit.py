@@ -140,7 +140,8 @@ class EditView(flet.UserControl):
         for field in [
             self.tf_private_key,
             self.tf_public_key,
-            self.tf_endpoint
+            self.tf_endpoint,
+            self.tf_address
         ]:
             if not field.value:
                 has_error = True
