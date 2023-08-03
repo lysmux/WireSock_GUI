@@ -1,3 +1,4 @@
+import logging
 import winreg
 from ctypes import Structure, c_long, c_ulong, c_float, c_int, c_wchar_p, c_bool, CFUNCTYPE, c_void_p, CDLL
 from ctypes.wintypes import HANDLE
@@ -9,9 +10,8 @@ ws_location = winreg.QueryValueEx(ws_location_key, "InstallLocation")[0]
 wg_booster_path = Path(ws_location, "bin", "wgbooster.dll")
 wg_booster_lib = CDLL(wg_booster_path.as_posix())
 
-
-def logger(m):
-    print(m)
+logger = logging.getLogger("wire_sock")
+logger.setLevel(logging.INFO)
 
 
 class LogLevel(Enum):
@@ -44,7 +44,7 @@ class WGBooster:
             wgb_get_handle = wg_booster_lib.wgb_get_handle
             wgb_get_handle.argtypes = [HANDLE, c_int, c_bool]
             wgb_get_handle.restype = HANDLE
-            self._handle = wgb_get_handle(func_wrapper(logger), self.log_level.value, False)
+            self._handle = wgb_get_handle(func_wrapper(lambda msg: logger.info(msg)), self.log_level.value, False)
         return self._handle
 
     def create_tunnel(self, path: str) -> bool:
