@@ -30,6 +30,7 @@ class WSManager:
     def disconnect_tunnel(self):
         self.wg_booster.stop_tunnel()
         self.wg_booster.drop_tunnel()
+        self.current_tunnel = None
 
     def set_log_level(self):
         pass
