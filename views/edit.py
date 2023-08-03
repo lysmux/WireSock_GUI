@@ -1,6 +1,7 @@
 import flet
 
 import config_manager
+from dialogs.list_edit import ListEditDialog
 
 
 class EditView(flet.UserControl):
@@ -127,45 +128,8 @@ class EditView(flet.UserControl):
         )
 
     def on_list_field_focus(self, event: flet.ControlEvent):
-        def on_field_blur(e: flet.ControlEvent):
-            if not e.control.value:
-                content.controls.remove(e.control)
-                content.update()
-
-        def on_field_add(e: flet.ControlEvent):
-            new_field = flet.TextField(on_blur=on_field_blur)
-            content.controls.insert(-1, new_field)
-            content.update()
-            new_field.focus()
-
-        def on_close_dlg(e: flet.ControlEvent):
-            data = []
-            for control in content.controls:
-                if isinstance(control, flet.TextField):
-                    data.append(control.value)
-            event.control.data = data
-            event.control.value = str(data)
-            event.control.update()
-
-            dlg.open = False
-            self.page.update()
-
-        content = flet.Column([
-            flet.ElevatedButton(text="Add", on_click=on_field_add)
-        ])
-
-        dlg = flet.AlertDialog(
-            title=flet.Text("Edit"),
-            content=content,
-            actions=[
-                flet.ElevatedButton(text="Update", on_click=on_close_dlg)
-            ],
-            on_dismiss=lambda _: self.save_btn.focus()
-        )
-
-        for field in event.control.data:
-            content.controls.insert(0, flet.TextField(value=field, on_blur=on_field_blur))
-
+        self.save_btn.focus()  # unfocus text field
+        dlg = ListEditDialog(event.control)
         dlg.open = True
         self.page.dialog = dlg
         self.page.update()

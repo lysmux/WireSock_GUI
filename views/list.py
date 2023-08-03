@@ -4,6 +4,7 @@ from pathlib import Path
 import flet
 
 import config_manager
+from dialogs.tunnel_error import TunnelErrorDialog
 from wiresock_manager.wiresock_manager import WSManager
 
 
@@ -158,7 +159,12 @@ class ListView(flet.UserControl):
             event.control.text = "Connect"
             event.control.style.color = flet.colors.GREEN
         else:
-            wg_manager.connect_tunnel(tunnel)
+            if not wg_manager.connect_tunnel(tunnel):
+                dlg = TunnelErrorDialog(tunnel)
+                dlg.open = True
+                self.page.dialog = dlg
+                self.page.update()
+                return
             event.control.text = "Disconnect"
             event.control.style.color = flet.colors.RED
         event.control.update()
