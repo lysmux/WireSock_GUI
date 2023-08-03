@@ -29,7 +29,7 @@ def load_config(config_name: str) -> Tunnel:
         match key:
             case "PrivateKey":
                 interface_config["private_key"] = value
-            case "address":
+            case "Address":
                 interface_config["address"] = list(map(lambda x: x.strip(), value.split(",")))
             case "DNS":
                 interface_config["dns"] = list(map(lambda x: x.strip(), value.split(",")))
@@ -67,17 +67,20 @@ def save_config(tunnel: Tunnel):
     config.optionxform = str
 
     config.add_section("Interface")
-    config.set("Interface", "PrivateKey", tunnel.interface.private_key)
-    config.set("Interface", "Address", ",".join(tunnel.interface.address))
+    if tunnel.interface.private_key:
+        config.set("Interface", "PrivateKey", tunnel.interface.private_key)
+    if tunnel.interface.address:
+        config.set("Interface", "Address", ",".join(tunnel.interface.address))
     if tunnel.interface.dns:
         config.set("Interface", "DNS", ",".join(tunnel.interface.dns))
     if tunnel.interface.mtu:
         config.set("Interface", "MTU", str(tunnel.interface.mtu))
 
     config.add_section("Peer")
-    config.set("Peer", "PublicKey", tunnel.peer.public_key)
-    config.set("Peer", "Endpoint", tunnel.peer.endpoint)
-
+    if tunnel.peer.public_key:
+        config.set("Peer", "PublicKey", tunnel.peer.public_key)
+    if tunnel.peer.endpoint:
+        config.set("Peer", "Endpoint", tunnel.peer.endpoint)
     if tunnel.peer.pre_shared_key:
         config.set("Peer", "PresharedKey ", tunnel.peer.pre_shared_key)
     if tunnel.peer.allowed_ips:
