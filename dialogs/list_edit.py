@@ -1,15 +1,17 @@
 import flet
 
+import resources
+
 
 class ListEditDialog(flet.AlertDialog):
     def __init__(self, list_field: flet.TextField):
         super(ListEditDialog, self).__init__()
-        self.title = flet.Text("Edit")
+        self.title = flet.Text(resources.EDIT)
         self.actions = [
-            flet.ElevatedButton(text="Update", on_click=self.close_dlg)
+            flet.ElevatedButton(text=resources.UPDATE, on_click=self.close_dlg)
         ]
         self.content = flet.Column([
-            flet.ElevatedButton(text="Add", on_click=self.add_field)
+            flet.ElevatedButton(text=resources.ADD, on_click=self.add_field)
         ])
         for field in list_field.data:
             self.content.controls.insert(0, flet.TextField(value=field, on_blur=self.on_field_blur))

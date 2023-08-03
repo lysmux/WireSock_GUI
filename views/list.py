@@ -4,6 +4,7 @@ from pathlib import Path
 import flet
 
 import config_manager
+import resources
 from dialogs.tunnel_error import TunnelErrorDialog
 from wiresock_manager.wiresock_manager import WSManager
 
@@ -24,7 +25,7 @@ class ListView(flet.UserControl):
             flet.Column([
                 self.tunnels_column,
                 self.file_picker,
-                flet.ElevatedButton(text="Add tunnel",
+                flet.ElevatedButton(text=resources.ADD_TUNNEL,
                                     style=flet.ButtonStyle(
                                         color=flet.colors.GREEN
                                     ),
@@ -50,7 +51,7 @@ class ListView(flet.UserControl):
         event.control.focus()
         tunnel = event.control.data
 
-        connect_btn = flet.ElevatedButton(text="Connect",
+        connect_btn = flet.ElevatedButton(text=resources.CONNECT,
                                           style=flet.ButtonStyle(
                                               color=flet.colors.GREEN
                                           ),
@@ -59,74 +60,74 @@ class ListView(flet.UserControl):
         if tunnel != WSManager().current_tunnel and WSManager().current_tunnel is not None:
             connect_btn.disabled = True
         if tunnel == WSManager().current_tunnel:
-            connect_btn.text = "Disconnect"
+            connect_btn.text = resources.DISCONNECT
             connect_btn.style.color = flet.colors.RED
 
         self.info_column.controls = [
             connect_btn,
-            flet.Text(value="Interface:",
+            flet.Text(value=resources.INTERFACE,
                       weight=flet.FontWeight.BOLD,
                       size=40),
             flet.Row([
-                flet.Text(value="Private key:"),
+                flet.Text(value=resources.PRIVATE_KEY),
                 flet.Text(value=tunnel.interface.private_key),
             ], wrap=True),
             flet.Row([
-                flet.Text(value="Address:"),
+                flet.Text(value=resources.ADDRESS),
                 flet.Text(value=tunnel.interface.address),
             ], wrap=True),
             flet.Row([
-                flet.Text(value="DNS:"),
+                flet.Text(value=resources.DNS),
                 flet.Text(value=tunnel.interface.dns),
             ], wrap=True),
             flet.Row([
-                flet.Text(value="MTU:"),
+                flet.Text(value=resources.MTU),
                 flet.Text(value=tunnel.interface.mtu),
             ], wrap=True),
 
-            flet.Text(value="Peer",
+            flet.Text(value=resources.PEER,
                       weight=flet.FontWeight.BOLD,
                       size=40),
             flet.Row([
-                flet.Text(value="Public key:"),
+                flet.Text(value=resources.PUBLIC_KEY),
                 flet.Text(value=tunnel.peer.public_key),
             ], wrap=True),
             flet.Row([
-                flet.Text(value="Preshared key:"),
+                flet.Text(value=resources.PRESHARED_KEY),
                 flet.Text(value=tunnel.peer.pre_shared_key),
             ], wrap=True),
             flet.Row([
-                flet.Text(value="Endpoint:"),
+                flet.Text(value=resources.ENDPOINT),
                 flet.Text(value=tunnel.peer.endpoint),
             ], wrap=True),
             flet.Row([
-                flet.Text(value="Allowed IPs:"),
+                flet.Text(value=resources.ALLOWED_IPS),
                 flet.Text(value=tunnel.peer.allowed_ips),
             ], wrap=True),
             flet.Row([
-                flet.Text(value="Disallowed IPs:"),
+                flet.Text(value=resources.DISALLOWED_IPS),
                 flet.Text(value=tunnel.peer.disallowed_ips),
             ], wrap=True),
             flet.Row([
-                flet.Text(value="Allowed apps:"),
+                flet.Text(value=resources.ALLOWED_APPS),
                 flet.Text(value=tunnel.peer.allowed_apps),
             ], wrap=True),
             flet.Row([
-                flet.Text(value="Disallowed apps:"),
+                flet.Text(value=resources.DISALLOWED_APPS),
                 flet.Text(value=tunnel.peer.disallowed_apps),
             ], wrap=True),
             flet.Row([
-                flet.Text(value="Persistence keepalive:"),
+                flet.Text(value=resources.PERSISTENCE_KEEPALIVE),
                 flet.Text(value=tunnel.peer.persistent_keepalive),
             ], wrap=True),
 
-            flet.ElevatedButton(text="Edit tunnel",
+            flet.ElevatedButton(text=resources.EDIT_TUNNEL,
                                 style=flet.ButtonStyle(
                                     color=flet.colors.LIGHT_BLUE
                                 ),
                                 on_click=self.on_tunnel_edit,
                                 data=tunnel),
-            flet.ElevatedButton(text="Delete tunnel",
+            flet.ElevatedButton(text=resources.DELETE_TUNNEL,
                                 style=flet.ButtonStyle(
                                     color=flet.colors.RED
                                 ),
@@ -163,7 +164,7 @@ class ListView(flet.UserControl):
 
         if wg_manager.current_tunnel == tunnel:
             wg_manager.disconnect_tunnel()
-            event.control.text = "Connect"
+            event.control.text = resources.CONNECT
             event.control.style.color = flet.colors.GREEN
         else:
             if not wg_manager.connect_tunnel(tunnel):
@@ -172,6 +173,6 @@ class ListView(flet.UserControl):
                 self.page.dialog = dlg
                 self.page.update()
                 return
-            event.control.text = "Disconnect"
+            event.control.text = resources.DISCONNECT
             event.control.style.color = flet.colors.RED
         event.control.update()

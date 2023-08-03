@@ -1,12 +1,13 @@
 import flet
 from flet_core import TemplateRoute
 
+import resources
 from views.edit import EditView
 from views.main import MainView
 
 
 def main(page: flet.Page):
-    page.title = "WireSock"
+    page.title = resources.APP_TITLE
 
     def route_change(route):
         template_route = TemplateRoute(route.route)

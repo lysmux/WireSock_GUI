@@ -1,6 +1,7 @@
 import flet
 
 import config_manager
+import resources
 from dialogs.list_edit import ListEditDialog
 
 
@@ -17,10 +18,10 @@ class EditView(flet.UserControl):
         self.tf_dns = flet.TextField(value=str(self.tunnel.interface.dns),
                                      on_focus=self.on_list_field_focus,
                                      data=self.tunnel.interface.dns)
-        self.tf_mtu = flet.TextField(value=str(self.tunnel.interface.mtu), hint_text="(optional)")
+        self.tf_mtu = flet.TextField(value=str(self.tunnel.interface.mtu), hint_text=resources.OPTIONAL)
 
         self.tf_public_key = flet.TextField(value=self.tunnel.peer.public_key)
-        self.tf_pre_shared_key = flet.TextField(value=self.tunnel.peer.pre_shared_key, hint_text="(optional)")
+        self.tf_pre_shared_key = flet.TextField(value=self.tunnel.peer.pre_shared_key, hint_text=resources.OPTIONAL)
         self.tf_endpoint = flet.TextField(value=self.tunnel.peer.endpoint)
         self.tf_allowed_ips = flet.TextField(value=str(self.tunnel.peer.allowed_ips),
                                              on_focus=self.on_list_field_focus,
@@ -34,9 +35,9 @@ class EditView(flet.UserControl):
         self.tf_disallowed_apps = flet.TextField(value=str(self.tunnel.peer.disallowed_apps),
                                                  on_focus=self.on_list_field_focus,
                                                  data=self.tunnel.peer.disallowed_apps)
-        self.tf_persist = flet.TextField(value=str(self.tunnel.peer.persistent_keepalive), hint_text="(optional)")
+        self.tf_persist = flet.TextField(value=str(self.tunnel.peer.persistent_keepalive), hint_text=resources.OPTIONAL)
 
-        self.save_btn = flet.ElevatedButton(text="Save",
+        self.save_btn = flet.ElevatedButton(text=resources.SAVE,
                                             style=flet.ButtonStyle(
                                                 color=flet.colors.GREEN
                                             ),
@@ -45,35 +46,35 @@ class EditView(flet.UserControl):
     def build(self):
         return flet.Column(
             [
-                flet.ElevatedButton(text="Back",
+                flet.ElevatedButton(text=resources.BACK,
                                     icon=flet.icons.KEYBOARD_ARROW_LEFT,
                                     style=flet.ButtonStyle(
                                         color=flet.colors.LIGHT_BLUE
                                     ),
                                     on_click=lambda _: self.page.go("/")),
 
-                flet.Text(value=f"Tunnel: {self.tunnel.name}",
+                flet.Text(value=f"{resources.TUNNEL}: {self.tunnel.name}",
                           weight=flet.FontWeight.BOLD,
                           size=40),
 
-                flet.Text(value="Interface",
+                flet.Text(value=resources.INTERFACE,
                           weight=flet.FontWeight.BOLD,
                           size=40),
                 flet.GridView([
                     flet.Column([
-                        flet.Text(value="Private key"),
+                        flet.Text(value=resources.PRIVATE_KEY),
                         self.tf_private_key
                     ]),
                     flet.Column([
-                        flet.Text(value="Address"),
+                        flet.Text(value=resources.ADDRESS),
                         self.tf_address
                     ]),
                     flet.Column([
-                        flet.Text(value="DNS"),
+                        flet.Text(value=resources.DNS),
                         self.tf_dns
                     ]),
                     flet.Column([
-                        flet.Text(value="MTU"),
+                        flet.Text(value=resources.MTU),
                         self.tf_mtu
                     ]),
                 ],
@@ -83,40 +84,40 @@ class EditView(flet.UserControl):
 
                 flet.Divider(height=9, thickness=3),
 
-                flet.Text(value="Peer",
+                flet.Text(value=resources.PEER,
                           weight=flet.FontWeight.BOLD,
                           size=40),
                 flet.GridView([
                     flet.Column([
-                        flet.Text(value="Public key"),
+                        flet.Text(value=resources.PUBLIC_KEY),
                         self.tf_public_key
                     ]),
                     flet.Column([
-                        flet.Text(value="Preshared key"),
+                        flet.Text(value=resources.PRESHARED_KEY),
                         self.tf_pre_shared_key
                     ]),
                     flet.Column([
-                        flet.Text(value="Endpoint"),
+                        flet.Text(value=resources.ENDPOINT),
                         self.tf_endpoint
                     ]),
                     flet.Column([
-                        flet.Text(value="Allowed IPs"),
+                        flet.Text(value=resources.ALLOWED_IPS),
                         self.tf_allowed_ips
                     ]),
                     flet.Column([
-                        flet.Text(value="Disallowed IPs"),
+                        flet.Text(value=resources.DISALLOWED_IPS),
                         self.tf_disallowed_ips
                     ]),
                     flet.Column([
-                        flet.Text(value="Allowed apps"),
+                        flet.Text(value=resources.ALLOWED_APPS),
                         self.tf_allowed_apps
                     ]),
                     flet.Column([
-                        flet.Text(value="Disallowed apps"),
+                        flet.Text(value=resources.DISALLOWED_APPS),
                         self.tf_disallowed_apps
                     ]),
                     flet.Column([
-                        flet.Text(value="Persistence keepalive"),
+                        flet.Text(value=resources.PERSISTENCE_KEEPALIVE),
                         self.tf_persist
                     ]),
                 ],
@@ -145,7 +146,7 @@ class EditView(flet.UserControl):
         ]:
             if not field.value:
                 has_error = True
-                field.error_text = "Can't be empty"
+                field.error_text = resources.NOT_EMPTY
                 field.update()
 
         for field in [
@@ -154,7 +155,7 @@ class EditView(flet.UserControl):
         ]:
             if field.value and not field.value.isdigit():
                 has_error = True
-                field.error_text = "Can be positive integer"
+                field.error_text = resources.ONLY_POSITIVE_INTEGER
                 field.update()
 
         if not has_error:
