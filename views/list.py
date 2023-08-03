@@ -50,13 +50,20 @@ class ListView(flet.UserControl):
         event.control.focus()
         tunnel = event.control.data
 
+        connect_btn = flet.ElevatedButton(text="Connect",
+                                          style=flet.ButtonStyle(
+                                              color=flet.colors.GREEN
+                                          ),
+                                          on_click=self.on_tunnel_state,
+                                          data=tunnel)
+        if tunnel != WSManager().current_tunnel and WSManager().current_tunnel is not None:
+            connect_btn.disabled = True
+        if tunnel == WSManager().current_tunnel:
+            connect_btn.text = "Disconnect"
+            connect_btn.style.color = flet.colors.RED
+
         self.info_column.controls = [
-            flet.ElevatedButton(text="Connect",
-                                style=flet.ButtonStyle(
-                                    color=flet.colors.GREEN
-                                ),
-                                on_click=self.on_tunnel_state,
-                                data=tunnel),
+            connect_btn,
             flet.Text(value="Interface:",
                       weight=flet.FontWeight.BOLD,
                       size=40),

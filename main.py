@@ -7,6 +7,7 @@ from views.main import MainView
 
 def main(page: flet.Page):
     page.title = "WireSock"
+
     def route_change(route):
         template_route = TemplateRoute(route.route)
 
