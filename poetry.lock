@@ -915,7 +915,17 @@ files = [
     {file = "websockets-11.0.3.tar.gz", hash = "sha256:88fc51d9a26b10fc331be344f1781224a375b78488fc343620184e95a4b27016"},
 ]
 
+[[package]]
+name = "winshell"
+version = "0.6"
+description = "Windows shell functions"
+optional = false
+python-versions = "*"
+files = [
+    {file = "winshell-0.6.zip", hash = "sha256:16812fcd6a43391d6c0b707b4d67e809e52286a739683a91623baa0804ea0d41"},
+]
+
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "4da895e25766008ff3e4eed589586ab64d37833474a46e15cccb13c991fb7753"
+content-hash = "3ef683c699335e9e11249c1e036c374bfdf355d5995243907f2122e62433b03e"

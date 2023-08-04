@@ -1,4 +1,9 @@
+import sys
+from os import getenv
+from pathlib import Path
+
 import flet
+import winshell
 
 import resources
 from dialogs.va_mode_error import VAModeErrorDialog
@@ -68,6 +73,15 @@ class SettingsView(flet.UserControl):
         WSManager().set_log_level(log_level)
 
     def on_autostart_change(self, event: flet.ControlEvent):
+        if getattr(sys, "frozen", False):
+            file_name = Path(sys.executable).with_suffix(".lnk").name
+            startup_path = Path(winshell.startup(), file_name)
+            if not event.control.value:
+                startup_path.unlink(missing_ok=True)
+            else:
+                with winshell.shortcut(startup_path) as link:
+                    link.path = sys.executable
+
         self.page.client_storage.set("autostart", event.control.value)
 
     def on_check_updates_change(self, event: flet.ControlEvent):
