@@ -20,7 +20,7 @@ class ListView(flet.UserControl):
         self.file_picker = flet.FilePicker(on_result=self.add_tunnel)
 
     def build(self):
-        content = flet.Row([
+        return flet.Row([
             flet.Column([
                 self.file_picker,
                 flet.Column(ref=self.tunnels_column, scroll=flet.ScrollMode.AUTO, expand=True),
@@ -34,9 +34,8 @@ class ListView(flet.UserControl):
             flet.Column(ref=self.info_column, scroll=flet.ScrollMode.AUTO, expand=True)
         ], vertical_alignment=flet.CrossAxisAlignment.START)
 
+    def did_mount(self):
         self.update_tunnels()
-
-        return content
 
     def update_tunnels(self):
         configs_dir = config_manager.get_configs_dir()
