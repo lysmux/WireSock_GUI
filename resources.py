@@ -47,6 +47,9 @@ TUNNEL_START_ERROR_CONTENT = "An error occurred during the tunnel startup"
 TUNNEL_ACTIVE_TITLE = "Tunnel is active"
 TUNNEL_ACTIVE_CONTENT = "Turn off the tunnel before editing"
 
+VA_MODE_ERROR_TITLE = "Error when changing Virtual adapter mode"
+VA_MODE_ERROR_CONTENT = "Disconnect from tunnel before change Virtual adapter mode"
+
 LOG_LEVEL = "Log level"
 
 LEVEL_NONE = "None"

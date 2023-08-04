@@ -1,6 +1,8 @@
 import flet
 
 import resources
+from dialogs.va_mode_error import VAModeErrorDialog
+from wiresock_manager.wiresock_manager import WSManager
 
 
 class SettingsView(flet.UserControl):
@@ -48,7 +50,17 @@ class SettingsView(flet.UserControl):
         self.page.client_storage.set("check_updates", event.control.value)
 
     def on_va_mode_change(self, event: flet.ControlEvent):
-        self.page.client_storage.set("va_mode", event.control.value)
+        if WSManager().current_tunnel:
+            event.control.value = not event.control.value
+            event.control.update()
+
+            dlg = VAModeErrorDialog()
+            dlg.open = True
+            self.page.dialog = dlg
+            self.page.update()
+        else:
+            WSManager().set_va_mode(event.control.value)
+            self.page.client_storage.set("va_mode", event.control.value)
 
     def on_log_level_change(self, event: flet.ControlEvent):
         self.page.client_storage.set("log_level", event.control.value)

@@ -35,11 +35,16 @@ class WSManager:
     def set_log_level(self):
         pass
 
+    def set_va_mode(self, va_mode: bool):
+        if self.current_tunnel:
+            raise RuntimeError("Drop tunnel before change va_mode")
+        self.wg_booster.va_mode = va_mode
+
     def is_active(self) -> bool:
-        return self.wg_booster.active
+        return self.wg_booster.is_active()
 
     def get_stat(self) -> WGStat:
-        stat = self.wg_booster.stat
+        stat = self.wg_booster.get_stat()
         return WGStat(time_since_last_handshake=stat.time_since_last_handshake,
                       tx_bytes=stat.tx_bytes,
                       rx_bytes=stat.rx_bytes,

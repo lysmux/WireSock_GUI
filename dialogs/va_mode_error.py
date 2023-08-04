@@ -3,14 +3,14 @@ import flet
 import resources
 
 
-class TunnelActiveDialog(flet.AlertDialog):
+class VAModeErrorDialog(flet.AlertDialog):
     def __init__(self):
-        super(TunnelActiveDialog, self).__init__()
-        self.title = flet.Text(value=resources.TUNNEL_ACTIVE_TITLE)
+        super(VAModeErrorDialog, self).__init__()
+        self.title = flet.Text(value=resources.VA_MODE_ERROR_TITLE)
         self.actions = [
             flet.TextButton(resources.CLOSE, on_click=self.close_dlg),
         ]
-        self.content = flet.Text(resources.TUNNEL_ACTIVE_CONTENT)
+        self.content = flet.Text(resources.VA_MODE_ERROR_CONTENT)
 
     def close_dlg(self, event: flet.ControlEvent):
         self.open = False

@@ -162,15 +162,14 @@ class ListView(flet.UserControl):
         self.info_column.current.clean()
 
     def activate_tunnel(self, event: flet.ControlEvent):
-        wg_manager = WSManager()
         tunnel = event.control.data
 
-        if wg_manager.current_tunnel == tunnel:
-            wg_manager.disconnect_tunnel()
+        if WSManager().current_tunnel == tunnel:
+            WSManager().disconnect_tunnel()
             event.control.text = resources.CONNECT
             event.control.style.color = flet.colors.GREEN
         else:
-            if not wg_manager.connect_tunnel(tunnel):
+            if not WSManager().connect_tunnel(tunnel):
                 dlg = TunnelErrorDialog(tunnel)
                 dlg.open = True
                 self.page.dialog = dlg
