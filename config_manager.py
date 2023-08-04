@@ -13,11 +13,16 @@ def get_configs_dir() -> Path:
     return path.expanduser()
 
 
-def load_config(config_name: str) -> Tunnel:
+def load_config(config_name: str) -> Tunnel | None:
     configs_dir = get_configs_dir()
+    config_path = configs_dir / f"{config_name}.conf"
+
+    if not config_path.exists():
+        return None
+
     config = configparser.ConfigParser()
     config.optionxform = str
-    config.read(configs_dir / f"{config_name}.conf")
+    config.read(config_path)
 
     if not config.has_section("Interface") or not config.has_section("Peer"):
         raise

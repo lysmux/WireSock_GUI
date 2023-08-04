@@ -1,5 +1,4 @@
 import sys
-from os import getenv
 from pathlib import Path
 
 import flet
@@ -15,6 +14,7 @@ class SettingsView(flet.UserControl):
         super(SettingsView, self).__init__()
 
         self.autostart = flet.Ref[flet.Switch]()
+        self.autoconnect = flet.Ref[flet.Switch]()
         self.check_updates = flet.Ref[flet.Switch]()
         self.va_mode = flet.Ref[flet.Switch]()
         self.log_level = flet.Ref[flet.Dropdown]()
@@ -24,6 +24,10 @@ class SettingsView(flet.UserControl):
             flet.Row([
                 flet.Text(resources.AUTOSTART),
                 flet.Switch(ref=self.autostart, on_change=self.on_autostart_change)
+            ]),
+            flet.Row([
+                flet.Text(resources.AUTOCONNECT),
+                flet.Switch(ref=self.autoconnect, on_change=self.on_autoconnect_change)
             ]),
             flet.Row([
                 flet.Text(resources.CHECK_UPDATES),
@@ -53,12 +57,16 @@ class SettingsView(flet.UserControl):
 
     def load_settings(self):
         autostart = self.page.client_storage.get("autostart") or False
+        autoconnect = self.page.client_storage.get("autoconnect") or True
         check_updates = self.page.client_storage.get("check_updates") or True
         va_mode = self.page.client_storage.get("check_updates") or False
         log_level = self.page.client_storage.get("log_level") or resources.LEVEL_ERROR
 
         self.autostart.current.value = autostart
         self.autostart.current.update()
+
+        self.autoconnect.current.value = autoconnect
+        self.autoconnect.current.update()
 
         self.check_updates.current.value = check_updates
         self.check_updates.current.update()
@@ -83,6 +91,9 @@ class SettingsView(flet.UserControl):
                     link.path = sys.executable
 
         self.page.client_storage.set("autostart", event.control.value)
+
+    def on_autoconnect_change(self, event: flet.ControlEvent):
+        self.page.client_storage.set("autoconnect", event.control.value)
 
     def on_check_updates_change(self, event: flet.ControlEvent):
         self.page.client_storage.set("check_updates", event.control.value)
