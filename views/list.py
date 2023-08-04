@@ -1,5 +1,5 @@
-import shutil
 from pathlib import Path
+from shutil import copy
 
 import flet
 
@@ -14,17 +14,15 @@ class ListView(flet.UserControl):
         super().__init__()
         self.expand = True
 
-        self.info_column = flet.Column(scroll=flet.ScrollMode.AUTO, expand=True)
-        self.tunnels_column = flet.Column(scroll=flet.ScrollMode.AUTO, expand=True)
-        self.file_picker = flet.FilePicker(on_result=self.on_tunnel_add)
+        self.tunnels_column = flet.Ref[flet.Column]()
+        self.info_column = flet.Ref[flet.Column]()
+        self.file_picker = flet.FilePicker(on_result=self.add_tunnel)
 
     def build(self):
-        self.update_tunnels()
-
-        return flet.Row([
+        content = flet.Row([
             flet.Column([
-                self.tunnels_column,
                 self.file_picker,
+                flet.Column(ref=self.tunnels_column, scroll=flet.ScrollMode.AUTO, expand=True),
                 flet.ElevatedButton(text=resources.ADD_TUNNEL,
                                     style=flet.ButtonStyle(
                                         color=flet.colors.GREEN
@@ -32,42 +30,44 @@ class ListView(flet.UserControl):
                                     on_click=lambda _: self.file_picker.pick_files(allowed_extensions=["conf"]))
             ]),
             flet.VerticalDivider(width=9, thickness=3),
-            self.info_column
+            flet.Column(ref=self.info_column, scroll=flet.ScrollMode.AUTO, expand=True)
         ], vertical_alignment=flet.CrossAxisAlignment.START)
+
+        self.update_tunnels()
+
+        return content
 
     def update_tunnels(self):
         configs_dir = config_manager.get_configs_dir()
 
-        self.tunnels_column.controls.clear()
+        self.tunnels_column.current.controls.clear()
         for tunnel_path in configs_dir.glob("*.conf"):
             tunnel = config_manager.load_config(tunnel_path.stem)
-            self.tunnels_column.controls.append(
-                flet.TextButton(text=tunnel.name, on_click=self.on_tunnel_click, data=tunnel)
+            self.tunnels_column.current.controls.append(
+                flet.TextButton(text=tunnel.name, on_click=self.select_tunnel, data=tunnel)
             )
-        if self.tunnels_column.page:
-            self.tunnels_column.update()
+        if self.tunnels_column.current.page:
+            self.tunnels_column.current.update()
 
-    def on_tunnel_click(self, event: flet.ControlEvent):
+    def select_tunnel(self, event: flet.ControlEvent):
         event.control.focus()
         tunnel = event.control.data
 
-        connect_btn = flet.ElevatedButton(text=resources.CONNECT,
-                                          style=flet.ButtonStyle(
-                                              color=flet.colors.GREEN
-                                          ),
-                                          on_click=self.on_tunnel_state,
-                                          data=tunnel)
+        connect_btn = flet.Ref[flet.ElevatedButton]()
         if tunnel != WSManager().current_tunnel and WSManager().current_tunnel is not None:
-            connect_btn.disabled = True
+            connect_btn.current.disabled = True
         if tunnel == WSManager().current_tunnel:
-            connect_btn.text = resources.DISCONNECT
-            connect_btn.style.color = flet.colors.RED
+            connect_btn.current.text = resources.DISCONNECT
+            connect_btn.current.style.color = flet.colors.RED
 
-        self.info_column.controls = [
-            connect_btn,
-            flet.Text(value=resources.INTERFACE,
-                      weight=flet.FontWeight.BOLD,
-                      size=40),
+        self.info_column.current.controls = [
+            flet.ElevatedButton(ref=connect_btn,
+                                text=resources.CONNECT,
+                                style=flet.ButtonStyle(
+                                    color=flet.colors.GREEN
+                                ),
+                                on_click=self.activate_tunnel, data=tunnel),
+            flet.Text(value=resources.INTERFACE, weight=flet.FontWeight.BOLD, size=40),
             flet.Row([
                 flet.Text(value=resources.PRIVATE_KEY),
                 flet.Text(value=tunnel.interface.private_key),
@@ -85,9 +85,7 @@ class ListView(flet.UserControl):
                 flet.Text(value=tunnel.interface.mtu),
             ], wrap=True),
 
-            flet.Text(value=resources.PEER,
-                      weight=flet.FontWeight.BOLD,
-                      size=40),
+            flet.Text(value=resources.PEER, weight=flet.FontWeight.BOLD, size=40),
             flet.Row([
                 flet.Text(value=resources.PUBLIC_KEY),
                 flet.Text(value=tunnel.peer.public_key),
@@ -125,40 +123,38 @@ class ListView(flet.UserControl):
                                 style=flet.ButtonStyle(
                                     color=flet.colors.LIGHT_BLUE
                                 ),
-                                on_click=self.on_tunnel_edit,
-                                data=tunnel),
+                                on_click=self.edit_tunnel, data=tunnel),
             flet.ElevatedButton(text=resources.DELETE_TUNNEL,
                                 style=flet.ButtonStyle(
                                     color=flet.colors.RED
                                 ),
-                                on_click=self.on_tunnel_delete,
-                                data=tunnel)
+                                on_click=self.delete_tunnel, data=tunnel)
         ]
 
-        self.info_column.update()
+        self.info_column.current.controls.update()
 
-    def on_tunnel_add(self, event: flet.FilePickerResultEvent):
+    def add_tunnel(self, event: flet.FilePickerResultEvent):
         if not event.files:
             return
 
         file = event.files[0]
         configs_dir = config_manager.get_configs_dir()
-        shutil.copy(file.path, configs_dir)
+        copy(file.path, configs_dir)
         self.update_tunnels()
 
-    def on_tunnel_edit(self, event: flet.ControlEvent):
+    def edit_tunnel(self, event: flet.ControlEvent):
         tunnel = event.control.data
         self.page.go(f"/edit/{tunnel.name}")
 
-    def on_tunnel_delete(self, event: flet.ControlEvent):
+    def delete_tunnel(self, event: flet.ControlEvent):
         tunnel = event.control.data
         configs_dir = config_manager.get_configs_dir()
 
         Path(configs_dir, f"{tunnel.name}.conf").unlink()
         self.update_tunnels()
-        self.info_column.clean()
+        self.info_column.current.clean()
 
-    def on_tunnel_state(self, event: flet.ControlEvent):
+    def activate_tunnel(self, event: flet.ControlEvent):
         wg_manager = WSManager()
         tunnel = event.control.data
 
