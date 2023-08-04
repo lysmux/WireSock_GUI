@@ -61,3 +61,6 @@ VA_MODE = "Virtual adapter mode"
 CHECK_UPDATES = "Check updates on startup"
 AUTOSTART = "Start with Windows"
 AUTOCONNECT = "Connect to last tunnel on startup"
+
+CONNECT_NOTIFY = "Connected"
+DISCONNECT_NOTIFY = "Disconnected"

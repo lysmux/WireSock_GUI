@@ -11,6 +11,7 @@ python = ">=3.10,<3.13"
 flet = "^0.8.4"
 pyinstaller = "^5.13.0"
 winshell = "^0.6"
+windows-toasts = "^0.4.1"
 
 
 [build-system]

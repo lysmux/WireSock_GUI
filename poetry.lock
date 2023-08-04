@@ -916,6 +916,43 @@ files = [
 ]
 
 [[package]]
+name = "windows-toasts"
+version = "0.4.1"
+description = "Python library used to send toast notifications on Windows machines"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "Windows-Toasts-0.4.1.tar.gz", hash = "sha256:34d38ce5228e69e70c1719564922802e82127be19675da0855181b14c1973432"},
+    {file = "Windows_Toasts-0.4.1-py3-none-any.whl", hash = "sha256:9bbfdc1fb57a96a3a28cb1f66f6d93c981c0f893b29130a3dd32a862951a8510"},
+]
+
+[package.dependencies]
+winsdk = "1.0.0b9"
+
+[[package]]
+name = "winsdk"
+version = "1.0.0b9"
+description = "Python bindings for the Windows SDK"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "winsdk-1.0.0b9-cp310-cp310-win32.whl", hash = "sha256:b6bcf6ed7a0e97793c7b75e0acac0eb5fb658e0fcbcf12b1b3631e7eb668b294"},
+    {file = "winsdk-1.0.0b9-cp310-cp310-win_amd64.whl", hash = "sha256:dc44220e107f51c2bf2b3ba46b4c7140f53f3f3e1b7662e0cb18739acb7478d0"},
+    {file = "winsdk-1.0.0b9-cp310-cp310-win_arm64.whl", hash = "sha256:c17c76d7a9328d4da5b569beffcc3403ee32cdb8194b340dfc1df9a3a5866f0e"},
+    {file = "winsdk-1.0.0b9-cp311-cp311-win32.whl", hash = "sha256:f8cb2a1cf67c452f5479f6d6f80744fb00fb595ba5feb80be05354a21fdd7692"},
+    {file = "winsdk-1.0.0b9-cp311-cp311-win_amd64.whl", hash = "sha256:e0c55273575f4fc4992a6bb67e6229890aa88db8dea9c3c580e3a4c358f9833d"},
+    {file = "winsdk-1.0.0b9-cp311-cp311-win_arm64.whl", hash = "sha256:cc6ae631aa18f3c3eac975562f2874de11131363c45130dedd557e7789a2d165"},
+    {file = "winsdk-1.0.0b9-cp37-cp37m-win32.whl", hash = "sha256:1e98249a31db66d731e19c2e202e0c455fcea419fd172b950771767ca6b4628a"},
+    {file = "winsdk-1.0.0b9-cp37-cp37m-win_amd64.whl", hash = "sha256:53ef9e1017a6c94a51ccbe9a7a5847358fd78855663519c740ee22ff6255d6b5"},
+    {file = "winsdk-1.0.0b9-cp38-cp38-win32.whl", hash = "sha256:2586930fc56a86ff5065c6099f69e7bcdf80bc3e919c0837d4508433d77cc942"},
+    {file = "winsdk-1.0.0b9-cp38-cp38-win_amd64.whl", hash = "sha256:09db2b2ce261499bdd5cc32104ed2fe40dbcfeda20f4643c9126f3ee58566523"},
+    {file = "winsdk-1.0.0b9-cp39-cp39-win32.whl", hash = "sha256:1127ec12faa8793e82cc64d983a84d46a20806c24782d2469e5445b008828076"},
+    {file = "winsdk-1.0.0b9-cp39-cp39-win_amd64.whl", hash = "sha256:d19d7095cf6368161e32deede8e2cebc164589b881f56dce4ad110b54417e989"},
+    {file = "winsdk-1.0.0b9-cp39-cp39-win_arm64.whl", hash = "sha256:ce56f4739dc71e3dd65cd9ffb2f527871285aca097fc1fc24f1865d6327bab18"},
+    {file = "winsdk-1.0.0b9.tar.gz", hash = "sha256:207d35f9ab445521d4f060b5c1f2181660390cd3db27b32961af7438478fb226"},
+]
+
+[[package]]
 name = "winshell"
 version = "0.6"
 description = "Windows shell functions"
@@ -928,4 +965,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "3ef683c699335e9e11249c1e036c374bfdf355d5995243907f2122e62433b03e"
+content-hash = "904333b5846cc7eb5cbc1cd0282cc3dd492ce2486c89fccc2e2689ad3d23439e"
