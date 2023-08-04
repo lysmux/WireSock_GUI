@@ -5,6 +5,7 @@ import flet
 
 import config_manager
 import resources
+from dialogs.tunnel_active import TunnelActiveDialog
 from dialogs.tunnel_error import TunnelErrorDialog
 from wiresock_manager.wiresock_manager import WSManager
 
@@ -144,7 +145,13 @@ class ListView(flet.UserControl):
 
     def edit_tunnel(self, event: flet.ControlEvent):
         tunnel = event.control.data
-        self.page.go(f"/edit/{tunnel.name}")
+        if WSManager().current_tunnel == tunnel:
+            dlg = TunnelActiveDialog()
+            dlg.open = True
+            self.page.dialog = dlg
+            self.page.update()
+        else:
+            self.page.go(f"/edit/{tunnel.name}")
 
     def delete_tunnel(self, event: flet.ControlEvent):
         tunnel = event.control.data
@@ -168,7 +175,7 @@ class ListView(flet.UserControl):
                 dlg.open = True
                 self.page.dialog = dlg
                 self.page.update()
-                return
-            event.control.text = resources.DISCONNECT
-            event.control.style.color = flet.colors.RED
+            else:
+                event.control.text = resources.DISCONNECT
+                event.control.style.color = flet.colors.RED
         event.control.update()
