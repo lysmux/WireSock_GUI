@@ -4,6 +4,7 @@ TUNNEL = "Tunnel"
 
 TAB_TUNNELS = "Tunnels"
 TAB_LOG = "Log"
+TAB_SETTINGS = "Settings"
 
 ADD = "Add"
 UPDATE = "Update"
@@ -42,3 +43,14 @@ ONLY_POSITIVE_INTEGER = "Can be positive integer"
 
 TUNNEL_START_ERROR_TITLE = "Tunnel start error"
 TUNNEL_START_ERROR_CONTENT = "An error occurred during the tunnel startup"
+
+LOG_LEVEL = "Log level"
+
+LEVEL_NONE = "None"
+LEVEL_ERROR = "Error"
+LEVEL_INFO = "Info"
+LEVEL_ALL = "All"
+
+VA_MODE = "Virtual adapter mode"
+CHECK_UPDATES = "Check updates on startup"
+AUTOSTART = "Start with Windows"
