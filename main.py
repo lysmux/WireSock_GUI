@@ -3,10 +3,9 @@ from flet_core import TemplateRoute
 
 import config_manager
 import resources
-from misc import notify
+from misc import change_tunnel_state
 from views.edit import EditView
 from views.main import MainView
-from wiresock_manager.wiresock_manager import WSManager
 
 
 def route_change(route: flet.RouteChangeEvent):
@@ -41,8 +40,7 @@ def on_startup(page: flet.Page):
         last_tunnel_name = page.client_storage.get("last_tunnel")
         last_tunnel = config_manager.load_config(last_tunnel_name)
         if last_tunnel:
-            WSManager().connect_tunnel(last_tunnel)
-            notify(tunnel_name=last_tunnel_name, message=resources.CONNECT_NOTIFY)
+            change_tunnel_state(page=page, tunnel=last_tunnel, connect=True)
 
 
 def main(page: flet.Page):

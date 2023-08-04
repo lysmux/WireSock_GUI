@@ -6,8 +6,7 @@ import flet
 import config_manager
 import resources
 from dialogs.tunnel_active import TunnelActiveDialog
-from dialogs.tunnel_error import TunnelErrorDialog
-from misc import notify
+from misc import change_tunnel_state
 from wiresock_manager.wiresock_manager import WSManager
 
 
@@ -164,19 +163,11 @@ class ListView(flet.UserControl):
         tunnel = event.control.data
 
         if WSManager().current_tunnel == tunnel:
-            WSManager().disconnect_tunnel()
-            notify(tunnel_name=tunnel.name, message=resources.DISCONNECT_NOTIFY)
+            change_tunnel_state(page=self.page, tunnel=tunnel, connect=False)
             event.control.text = resources.CONNECT
             event.control.style.color = flet.colors.GREEN
-        else:
-            if not WSManager().connect_tunnel(tunnel):
-                dlg = TunnelErrorDialog(tunnel)
-                dlg.open = True
-                self.page.dialog = dlg
-                self.page.update()
-            else:
-                notify(tunnel_name=tunnel.name, message=resources.CONNECT_NOTIFY)
-                event.control.text = resources.DISCONNECT
-                event.control.style.color = flet.colors.RED
-                self.page.client_storage.set("last_tunnel", tunnel.name)
+        elif change_tunnel_state(page=self.page, tunnel=tunnel, connect=True):
+            event.control.text = resources.DISCONNECT
+            event.control.style.color = flet.colors.RED
+            self.page.client_storage.set("last_tunnel", tunnel.name)
         event.control.update()

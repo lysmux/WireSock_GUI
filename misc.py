@@ -1,8 +1,12 @@
 from logging import Handler
 
+import flet
 from windows_toasts import WindowsToaster, ToastText2
 
 import resources
+from dialogs.tunnel_error import TunnelErrorDialog
+from models import Tunnel
+from wiresock_manager.wiresock_manager import WSManager
 
 
 class LogHandler(Handler):
@@ -23,3 +27,19 @@ def notify(tunnel_name: str, message: str):
     toast.SetHeadline(f"{resources.TUNNEL}: {tunnel_name}")
     toast.SetBody(message)
     wintoaster.show_toast(toast)
+
+
+def change_tunnel_state(page: flet.Page, tunnel: Tunnel, connect: bool):
+    if connect:
+        if not WSManager().connect_tunnel(tunnel):
+            dlg = TunnelErrorDialog(tunnel)
+            dlg.open = True
+            page.dialog = dlg
+            page.update()
+            return False
+        else:
+            notify(tunnel_name=tunnel.name, message=resources.CONNECT_NOTIFY)
+    else:
+        WSManager().disconnect_tunnel()
+        notify(tunnel_name=tunnel.name, message=resources.DISCONNECT_NOTIFY)
+    return True
