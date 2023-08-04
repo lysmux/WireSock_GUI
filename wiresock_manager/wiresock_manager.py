@@ -32,7 +32,7 @@ class WSManager:
         self.wg_booster.drop_tunnel()
         self.current_tunnel = None
 
-    def set_log_level(self):
+    def set_log_level(self, log_level: str):
         pass
 
     def set_va_mode(self, va_mode: bool):
