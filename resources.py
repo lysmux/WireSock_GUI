@@ -44,7 +44,7 @@ NOT_EMPTY = "Can't be empty"
 ONLY_POSITIVE_INTEGER = "Can be positive integer"
 
 TUNNEL_START_ERROR_TITLE = "Tunnel start error"
-TUNNEL_START_ERROR_CONTENT = "An error occurred during the tunnel startup"
+TUNNEL_START_ERROR_CONTENT = "An error occurred during the tunnel startup.\nCheck logs"
 
 TUNNEL_ACTIVE_TITLE = "Tunnel is active"
 TUNNEL_ACTIVE_CONTENT = "Turn off the tunnel before editing"
