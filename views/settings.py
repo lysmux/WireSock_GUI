@@ -57,8 +57,8 @@ class SettingsView(flet.UserControl):
 
     def load_settings(self):
         autostart = self.page.client_storage.get("autostart") or False
-        autoconnect = self.page.client_storage.get("autoconnect") or True
-        check_updates = self.page.client_storage.get("check_updates") or True
+        autoconnect = self.page.client_storage.get("autoconnect") or False
+        check_updates = self.page.client_storage.get("check_updates") or False
         va_mode = self.page.client_storage.get("va_mode") or False
         log_level = self.page.client_storage.get("log_level") or resources.LEVEL_ERROR
 
