@@ -4,10 +4,12 @@ TUNNEL = "Tunnel"
 
 TAB_TUNNELS = "Tunnels"
 TAB_LOG = "Log"
+TAB_STATISTICS = "Statistics"
 TAB_SETTINGS = "Settings"
 
 ADD = "Add"
 UPDATE = "Update"
+EDIT = "Edit"
 CLOSE = "Close"
 
 ADD_TUNNEL = "Add tunnel"
@@ -64,3 +66,11 @@ AUTOCONNECT = "Connect to last tunnel on startup"
 
 CONNECT_NOTIFY = "Connected"
 DISCONNECT_NOTIFY = "Disconnected"
+
+LATEST_HANDSHAKE = "Latest handshake"
+RX_BYTES = "RX bytes"
+TX_BYTES = "TX bytes"
+ESTIMATED_LOSS = "Round-trip time"
+ESTIMATED_RTT = "Estimated loss"
+
+MILLI_SECONDS = "ms"

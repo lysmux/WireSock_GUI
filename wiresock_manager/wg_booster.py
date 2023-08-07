@@ -24,13 +24,13 @@ class LogLevel(IntEnum):
         return int(obj)
 
 
-class Stat(ctypes.Structure):
+class WgStats(ctypes.Structure):
     _fields_ = [
-        ('latest_handshake', ctypes.c_long),
-        ('tx_bytes', ctypes.c_ulong),
-        ('rx_bytes', ctypes.c_ulong),
-        ('estimated_loss', ctypes.c_float),
-        ('estimated_rtt', ctypes.c_int),
+        ("latest_handshake", ctypes.c_int64),
+        ("tx_bytes", ctypes.c_uint64),
+        ("rx_bytes", ctypes.c_uint64),
+        ("estimated_loss", ctypes.c_float),
+        ("estimated_rtt", ctypes.c_int32),
     ]
 
 
@@ -89,13 +89,13 @@ class WGBooster:
 
         return wgb_drop_tunnel(handle)
 
-    def get_stat(self, handle: HANDLE) -> Stat:
+    def get_stat(self, handle: HANDLE) -> WgStats:
         if self.va_mode:
             wgb_get_tunnel_state = wg_booster_lib.wgbp_get_tunnel_state
         else:
             wgb_get_tunnel_state = wg_booster_lib.wgb_get_tunnel_state
         wgb_get_tunnel_state.argtypes = [HANDLE]
-        wgb_get_tunnel_state.restype = Stat
+        wgb_get_tunnel_state.restype = WgStats
 
         return wgb_get_tunnel_state(handle)
 
