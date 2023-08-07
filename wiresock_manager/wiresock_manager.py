@@ -1,12 +1,19 @@
+import logging
+
 from config_manager import get_configs_dir
 from models import WGStat, Tunnel
-from wiresock_manager.wg_booster import WGBooster
+from wiresock_manager.wg_booster import WGBooster, LogLevel
+
+logger = logging.getLogger("wire_sock")
+logger.setLevel(logging.INFO)
 
 
 class WSManager:
     instance = None
     current_tunnel = None
+
     wg_booster = WGBooster()
+    _handle = None
 
     def __new__(cls):
         if cls.instance is None:
@@ -17,37 +24,53 @@ class WSManager:
         configs_dir = get_configs_dir()
         config_path = configs_dir / f"{tunnel.name}.conf"
 
-        if not self.wg_booster.create_tunnel(config_path.as_posix()):
+        if self._handle is None:
+            self._handle = self.wg_booster.get_handle(
+                log_func=lambda msg: logger.info(msg),
+                log_level=LogLevel.error
+            )
+
+        if self._handle is None:
             return False
 
-        if not self.wg_booster.start_tunnel():
-            self.wg_booster.drop_tunnel()
+        if not self.wg_booster.create_tunnel(self._handle, config_path.as_posix()):
+            self._handle = None
+            return False
+
+        if not self.wg_booster.start_tunnel(self._handle):
+            self.wg_booster.drop_tunnel(self._handle)
+            self._handle = None
             return False
 
         self.current_tunnel = tunnel
         return True
 
     def disconnect_tunnel(self):
-        self.wg_booster.stop_tunnel()
-        self.wg_booster.drop_tunnel()
-        self.current_tunnel = None
+        if self._handle is not None:
+            self.wg_booster.stop_tunnel(self._handle)
+            self.wg_booster.drop_tunnel(self._handle)
+            self.current_tunnel = None
 
     def set_log_level(self, log_level: str):
         pass
 
     def set_va_mode(self, va_mode: bool):
-        if self.current_tunnel:
-            raise RuntimeError("Drop tunnel before change va_mode")
+        if self._handle is not None:
+            raise RuntimeError("Disconnect from tunnel before change va_mode")
         self.wg_booster.va_mode = va_mode
 
     def is_active(self) -> bool:
-        return self.wg_booster.is_active()
+        if self._handle is not None:
+            return self.wg_booster.is_active(self._handle)
+        return False
 
     def get_stat(self) -> WGStat:
-        stat = self.wg_booster.get_stat()
-        return WGStat(time_since_last_handshake=stat.time_since_last_handshake,
-                      tx_bytes=stat.tx_bytes,
-                      rx_bytes=stat.rx_bytes,
-                      estimated_loss=stat.estimated_loss,
-                      estimated_rtt=stat.estimated_rtt,
-                      )
+        if self._handle is not None:
+            stat = self.wg_booster.get_stat(self._handle)
+            return WGStat(latest_handshake=stat.latest_handshake,
+                          tx_bytes=stat.tx_bytes,
+                          rx_bytes=stat.rx_bytes,
+                          estimated_loss=stat.estimated_loss,
+                          estimated_rtt=stat.estimated_rtt,
+                          )
+        return WGStat()

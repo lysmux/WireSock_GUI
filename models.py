@@ -30,7 +30,7 @@ class Tunnel:
 
 @dataclass
 class WGStat:
-    time_since_last_handshake: int = field(default=0)
+    latest_handshake: int = field(default=0)
     tx_bytes: int = field(default=0)
     rx_bytes: int = field(default=0)
     estimated_loss: float = field(default=0)
