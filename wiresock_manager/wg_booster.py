@@ -1,4 +1,5 @@
 import ctypes
+import typing
 import winreg
 from ctypes.wintypes import HANDLE
 from enum import IntEnum
@@ -37,17 +38,19 @@ class WgStats(ctypes.Structure):
 class WGBooster:
     def __init__(self, va_mode: bool = False):
         self.va_mode = va_mode
+        self._log_func = None
 
-    def get_handle(self, log_func, log_level: LogLevel) -> HANDLE:
-        func_wrapper = ctypes.CFUNCTYPE(None, ctypes.POINTER(ctypes.c_wchar_p))
+    def get_handle(self, log_func: typing.Callable, log_level: LogLevel) -> HANDLE:
+        self._log_func = ctypes.CFUNCTYPE(None, ctypes.c_char_p)(log_func)
 
         if self.va_mode:
             wgb_get_handle = wg_booster_lib.wgbp_get_handle
         else:
             wgb_get_handle = wg_booster_lib.wgb_get_handle
-        wgb_get_handle.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_bool]
+        wgb_get_handle.argtypes = [ctypes.c_void_p, LogLevel, ctypes.c_bool]
         wgb_get_handle.restype = HANDLE
-        return wgb_get_handle(func_wrapper(log_func), 0, False)
+
+        return wgb_get_handle(self._log_func, log_level, False)
 
     def create_tunnel(self, handle: HANDLE, path: str) -> bool:
         if self.va_mode:
