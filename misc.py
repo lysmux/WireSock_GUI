@@ -1,5 +1,3 @@
-from logging import Handler
-
 import flet
 from windows_toasts import WindowsToaster, ToastText2
 
@@ -7,18 +5,6 @@ import resources
 from dialogs.tunnel_error import TunnelErrorDialog
 from models import Tunnel
 from wiresock_manager.wiresock_manager import WSManager
-
-
-class LogHandler(Handler):
-    def __init__(self):
-        super(LogHandler, self).__init__()
-        self.log_function = None
-
-    def emit(self, record):
-        message = self.format(record)
-
-        if self.log_function:
-            self.log_function(message)
 
 
 def notify(tunnel_name: str, message: str):

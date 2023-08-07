@@ -1,12 +1,9 @@
-import logging
 import typing
 
 from config_manager import get_configs_dir
+from logger import Logger
 from models import WGStat, Tunnel
 from wiresock_manager.wg_booster import WGBooster, LogLevel
-
-logger = logging.getLogger("wire_sock")
-logger.setLevel(logging.INFO)
 
 
 class WSManager:
@@ -30,7 +27,7 @@ class WSManager:
 
         if self._handle is None:
             self._handle = self.wg_booster.get_handle(
-                log_func=lambda msg: logger.info(msg.decode("utf8")),
+                log_func=lambda msg: Logger().log(msg.decode("utf8")),
                 log_level=log_level
             )
 
