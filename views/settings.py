@@ -59,7 +59,7 @@ class SettingsView(flet.UserControl):
         autostart = self.page.client_storage.get("autostart") or False
         autoconnect = self.page.client_storage.get("autoconnect") or True
         check_updates = self.page.client_storage.get("check_updates") or True
-        va_mode = self.page.client_storage.get("check_updates") or False
+        va_mode = self.page.client_storage.get("va_mode") or False
         log_level = self.page.client_storage.get("log_level") or resources.LEVEL_ERROR
 
         self.autostart.current.value = autostart
