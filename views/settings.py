@@ -42,11 +42,11 @@ class SettingsView(flet.UserControl):
                 flet.Dropdown(
                     ref=self.log_level,
                     options=[
-                        flet.dropdown.Option(resources.LEVEL_ERROR),
-                        flet.dropdown.Option(resources.LEVEL_INFO),
-                        flet.dropdown.Option(resources.LEVEL_ALL),
+                        flet.dropdown.Option(text=resources.LEVEL_ERROR, key="error"),
+                        flet.dropdown.Option(text=resources.LEVEL_INFO, key="info"),
+                        flet.dropdown.Option(text=resources.LEVEL_ALL, key="all"),
                     ],
-                    value=resources.LEVEL_ERROR,
+                    value="All",
                     on_change=self.on_log_level_change
                 )
             ])
@@ -112,4 +112,5 @@ class SettingsView(flet.UserControl):
             self.page.client_storage.set("va_mode", event.control.value)
 
     def on_log_level_change(self, event: flet.ControlEvent):
-        self.page.client_storage.set("log_level", event.control.value)
+        self.page.client_storage.set("log_level", event.control.data)
+        WSManager().set_log_level(event.control.data)

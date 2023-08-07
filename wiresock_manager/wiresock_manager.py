@@ -1,6 +1,6 @@
 import logging
+import typing
 
-import resources
 from config_manager import get_configs_dir
 from models import WGStat, Tunnel
 from wiresock_manager.wg_booster import WGBooster, LogLevel
@@ -21,9 +21,12 @@ class WSManager:
             cls.instance = super(WSManager, cls).__new__(cls)
         return cls.instance
 
-    def connect_tunnel(self, tunnel: Tunnel, log_level=resources.LEVEL_ALL) -> bool:
+    def connect_tunnel(self, tunnel: Tunnel, log_level: typing.Union[str, LogLevel] = LogLevel.all) -> bool:
         configs_dir = get_configs_dir()
         config_path = configs_dir / f"{tunnel.name}.conf"
+
+        if isinstance(log_level, str):
+            log_level = LogLevel[log_level]
 
         if self._handle is None:
             self._handle = self.wg_booster.get_handle(
@@ -50,17 +53,12 @@ class WSManager:
         if self._handle is not None:
             self.wg_booster.stop_tunnel(self._handle)
             self.wg_booster.drop_tunnel(self._handle)
-            self.current_tunnel = None
+        self.current_tunnel = None
 
-    def set_log_level(self, log_level: str):
+    def set_log_level(self, level: typing.Union[str, LogLevel]):
         if self._handle is not None:
-            match log_level:
-                case resources.LEVEL_INFO:
-                    level = LogLevel.info
-                case resources.LEVEL_ALL:
-                    level = LogLevel.all
-                case _:
-                    level = LogLevel.error
+            if isinstance(level, str):
+                level = LogLevel[level]
 
             self.wg_booster.set_log_level(self._handle, level)
 
