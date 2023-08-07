@@ -1,5 +1,6 @@
 import logging
 
+import resources
 from config_manager import get_configs_dir
 from models import WGStat, Tunnel
 from wiresock_manager.wg_booster import WGBooster, LogLevel
@@ -26,8 +27,7 @@ class WSManager:
 
         if self._handle is None:
             self._handle = self.wg_booster.get_handle(
-                log_func=lambda msg: logger.info(msg),
-                log_level=LogLevel.error
+                log_func=lambda msg: logger.info(msg.decode("utf8")),
             )
 
         if self._handle is None:
@@ -52,7 +52,16 @@ class WSManager:
             self.current_tunnel = None
 
     def set_log_level(self, log_level: str):
-        pass
+        if self._handle is not None:
+            match log_level:
+                case resources.LEVEL_INFO:
+                    level = LogLevel.info
+                case resources.LEVEL_ALL:
+                    level = LogLevel.all
+                case _:
+                    level = LogLevel.error
+
+            self.wg_booster.set_log_level(self._handle, level)
 
     def set_va_mode(self, va_mode: bool):
         if self._handle is not None:

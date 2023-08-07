@@ -54,7 +54,6 @@ VA_MODE_ERROR_CONTENT = "Disconnect from tunnel before change Virtual adapter mo
 
 LOG_LEVEL = "Log level"
 
-LEVEL_NONE = "None"
 LEVEL_ERROR = "Error"
 LEVEL_INFO = "Info"
 LEVEL_ALL = "All"
