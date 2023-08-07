@@ -1,6 +1,6 @@
 import flet
 
-from logger import Logger
+from utils.logger import Logger
 
 
 class LoggerView(flet.UserControl):

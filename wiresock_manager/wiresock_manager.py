@@ -1,7 +1,7 @@
 import typing
 
-from config_manager import get_configs_dir
-from logger import Logger
+from utils.config_manager import get_configs_dir
+from utils.logger import Logger
 from models import WGStat, Tunnel
 from wiresock_manager.wg_booster import WGBooster, LogLevel
 

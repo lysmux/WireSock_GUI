@@ -1,6 +1,6 @@
 import flet
 
-import config_manager
+from utils import config_manager
 import resources
 from dialogs.list_edit import ListEditDialog
 

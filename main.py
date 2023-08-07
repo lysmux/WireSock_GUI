@@ -1,7 +1,7 @@
 import flet
 from flet_core import TemplateRoute
 
-import config_manager
+from utils import config_manager
 import resources
 from misc import change_tunnel_state
 from views.edit import EditView

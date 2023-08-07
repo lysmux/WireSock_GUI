@@ -1,18 +1,10 @@
 import flet
-from windows_toasts import WindowsToaster, ToastText2
 
 import resources
 from dialogs.tunnel_error import TunnelErrorDialog
 from models import Tunnel
+from utils.notify import notify
 from wiresock_manager.wiresock_manager import WSManager
-
-
-def notify(tunnel_name: str, message: str):
-    wintoaster = WindowsToaster(resources.APP_TITLE)
-    toast = ToastText2()
-    toast.SetHeadline(f"{resources.TUNNEL}: {tunnel_name}")
-    toast.SetBody(message)
-    wintoaster.show_toast(toast)
 
 
 def change_tunnel_state(page: flet.Page, tunnel: Tunnel, connect: bool):
@@ -24,8 +16,8 @@ def change_tunnel_state(page: flet.Page, tunnel: Tunnel, connect: bool):
             page.update()
             return False
         else:
-            notify(tunnel_name=tunnel.name, message=resources.CONNECT_NOTIFY)
+            notify(tunnel=tunnel, message=resources.CONNECT_NOTIFY)
     else:
         WSManager().disconnect_tunnel()
-        notify(tunnel_name=tunnel.name, message=resources.DISCONNECT_NOTIFY)
+        notify(tunnel=tunnel, message=resources.DISCONNECT_NOTIFY)
     return True

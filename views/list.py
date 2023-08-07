@@ -3,7 +3,7 @@ from shutil import copy
 
 import flet
 
-import config_manager
+from utils import config_manager
 import resources
 from dialogs.tunnel_active import TunnelActiveDialog
 from misc import change_tunnel_state
