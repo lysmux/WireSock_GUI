@@ -36,8 +36,6 @@ class ListView(flet.UserControl):
         ], vertical_alignment=flet.CrossAxisAlignment.START)
 
     def did_mount(self):
-        self.update_tunnels()
-
         if self._first_start:
             self.__class__._first_start = False
             autoconnect = self.page.client_storage.get("autoconnect")
@@ -47,16 +45,25 @@ class ListView(flet.UserControl):
                 if last_tunnel:
                     self.activate_tunnel(last_tunnel)
 
+        self.update_tunnels()
+
     def update_tunnels(self):
         configs_dir = config_manager.get_configs_dir()
+        current_tunnel_btn = None
 
         self.tunnels_column.current.controls.clear()
         for tunnel_path in configs_dir.glob("*.conf"):
             tunnel = config_manager.load_config(tunnel_path.stem)
-            self.tunnels_column.current.controls.append(
-                flet.TextButton(text=tunnel.name, on_click=self.select_tunnel, data=tunnel)
-            )
+
+            tunnel_btn = flet.TextButton(text=tunnel.name, on_click=self.select_tunnel, data=tunnel)
+            self.tunnels_column.current.controls.append(tunnel_btn)
+            if WSManager().current_tunnel == tunnel:
+                current_tunnel_btn = tunnel_btn
         self.tunnels_column.current.update()
+
+        if current_tunnel_btn:
+            current_tunnel_btn.focus()
+            current_tunnel_btn.update()
 
     def select_tunnel(self, event: flet.ControlEvent):
         event.control.focus()
