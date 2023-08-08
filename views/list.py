@@ -175,7 +175,10 @@ class ListView(flet.UserControl):
         event.control.update()
 
     def activate_tunnel(self, tunnel: Tunnel):
-        if not WSManager().connect_tunnel(tunnel):
+        WSManager().set_va_mode(self.page.client_storage.get("va_mode") or False)
+        log_level = self.page.client_storage.get("log_level") or "all"
+
+        if not WSManager().connect_tunnel(tunnel=tunnel, log_level=log_level):
             dlg = TunnelErrorDialog(tunnel)
             dlg.open = True
             self.page.dialog = dlg

@@ -46,7 +46,7 @@ class SettingsView(flet.UserControl):
                         flet.dropdown.Option(text=resources.LEVEL_INFO, key="info"),
                         flet.dropdown.Option(text=resources.LEVEL_ALL, key="all"),
                     ],
-                    value="All",
+                    value="all",
                     on_change=self.on_log_level_change
                 )
             ])
@@ -60,7 +60,7 @@ class SettingsView(flet.UserControl):
         autoconnect = self.page.client_storage.get("autoconnect") or False
         check_updates = self.page.client_storage.get("check_updates") or False
         va_mode = self.page.client_storage.get("va_mode") or False
-        log_level = self.page.client_storage.get("log_level") or resources.LEVEL_ERROR
+        log_level = self.page.client_storage.get("log_level") or "all"
 
         self.autostart.current.value = autostart
         self.autostart.current.update()
@@ -76,9 +76,6 @@ class SettingsView(flet.UserControl):
 
         self.log_level.current.value = log_level
         self.log_level.current.update()
-
-        WSManager().set_va_mode(va_mode)
-        WSManager().set_log_level(log_level)
 
     def on_autostart_change(self, event: flet.ControlEvent):
         if getattr(sys, "frozen", False):
