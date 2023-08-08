@@ -3,20 +3,23 @@ from shutil import copy
 
 import flet
 
-from utils import config_manager
 import resources
 from dialogs.tunnel_active import TunnelActiveDialog
-from misc import change_tunnel_state
+from dialogs.tunnel_error import TunnelErrorDialog
+from models import Tunnel
+from utils import config_manager
+from utils.notify import notify
 from wiresock_manager.wiresock_manager import WSManager
 
 
 class ListView(flet.UserControl):
+    _first_start = True
+
     def __init__(self):
         super().__init__()
-        self.expand = True
-
         self.tunnels_column = flet.Ref[flet.Column]()
         self.info_column = flet.Ref[flet.Column]()
+        self.connect_btn = flet.Ref[flet.ElevatedButton]()
         self.file_picker = flet.FilePicker(on_result=self.add_tunnel)
 
     def build(self):
@@ -25,9 +28,7 @@ class ListView(flet.UserControl):
                 self.file_picker,
                 flet.Column(ref=self.tunnels_column, scroll=flet.ScrollMode.AUTO, expand=True),
                 flet.ElevatedButton(text=resources.ADD_TUNNEL,
-                                    style=flet.ButtonStyle(
-                                        color=flet.colors.GREEN
-                                    ),
+                                    style=flet.ButtonStyle(color=flet.colors.GREEN),
                                     on_click=lambda _: self.file_picker.pick_files(allowed_extensions=["conf"]))
             ]),
             flet.VerticalDivider(width=9, thickness=3),
@@ -36,6 +37,15 @@ class ListView(flet.UserControl):
 
     def did_mount(self):
         self.update_tunnels()
+
+        if self._first_start:
+            self.__class__._first_start = False
+            autoconnect = self.page.client_storage.get("autoconnect")
+            if autoconnect is not False:
+                last_tunnel_name = self.page.client_storage.get("last_tunnel")
+                last_tunnel = config_manager.load_config(last_tunnel_name)
+                if last_tunnel:
+                    self.activate_tunnel(last_tunnel)
 
     def update_tunnels(self):
         configs_dir = config_manager.get_configs_dir()
@@ -46,26 +56,16 @@ class ListView(flet.UserControl):
             self.tunnels_column.current.controls.append(
                 flet.TextButton(text=tunnel.name, on_click=self.select_tunnel, data=tunnel)
             )
-        if self.tunnels_column.current.page:
-            self.tunnels_column.current.update()
+        self.tunnels_column.current.update()
 
     def select_tunnel(self, event: flet.ControlEvent):
         event.control.focus()
         tunnel = event.control.data
 
-        connect_btn = flet.ElevatedButton(text=resources.CONNECT,
-                                          style=flet.ButtonStyle(
-                                              color=flet.colors.GREEN
-                                          ),
-                                          on_click=self.activate_tunnel, data=tunnel)
-        if tunnel != WSManager().current_tunnel and WSManager().current_tunnel is not None:
-            connect_btn.disabled = True
-        if tunnel == WSManager().current_tunnel:
-            connect_btn.text = resources.DISCONNECT
-            connect_btn.style.color = flet.colors.RED
-
         self.info_column.current.controls = [
-            connect_btn,
+            flet.ElevatedButton(ref=self.connect_btn, text=resources.CONNECT,
+                                style=flet.ButtonStyle(color=flet.colors.GREEN),
+                                on_click=self.change_tunnel_state, data=tunnel),
             flet.Text(value=resources.INTERFACE, weight=flet.FontWeight.BOLD, size=40),
             flet.Row([
                 flet.Text(value=resources.PRIVATE_KEY),
@@ -119,18 +119,20 @@ class ListView(flet.UserControl):
             ], wrap=True),
 
             flet.ElevatedButton(text=resources.EDIT_TUNNEL,
-                                style=flet.ButtonStyle(
-                                    color=flet.colors.LIGHT_BLUE
-                                ),
+                                style=flet.ButtonStyle(color=flet.colors.LIGHT_BLUE),
                                 on_click=self.edit_tunnel, data=tunnel),
             flet.ElevatedButton(text=resources.DELETE_TUNNEL,
-                                style=flet.ButtonStyle(
-                                    color=flet.colors.RED
-                                ),
+                                style=flet.ButtonStyle(color=flet.colors.RED),
                                 on_click=self.delete_tunnel, data=tunnel)
         ]
-
         self.info_column.current.update()
+
+        if tunnel != WSManager().current_tunnel and WSManager().current_tunnel is not None:
+            self.connect_btn.current.disabled = True
+        if tunnel == WSManager().current_tunnel:
+            self.connect_btn.current.text = resources.DISCONNECT
+            self.connect_btn.current.style.color = flet.colors.RED
+        self.connect_btn.current.update()
 
     def add_tunnel(self, event: flet.FilePickerResultEvent):
         if not event.files:
@@ -159,15 +161,30 @@ class ListView(flet.UserControl):
         self.update_tunnels()
         self.info_column.current.clean()
 
-    def activate_tunnel(self, event: flet.ControlEvent):
+    def change_tunnel_state(self, event: flet.ControlEvent):
         tunnel = event.control.data
 
         if WSManager().current_tunnel == tunnel:
-            change_tunnel_state(page=self.page, tunnel=tunnel, connect=False)
+            self.deactivate_tunnel(tunnel)
             event.control.text = resources.CONNECT
             event.control.style.color = flet.colors.GREEN
-        elif change_tunnel_state(page=self.page, tunnel=tunnel, connect=True):
+        elif self.activate_tunnel(tunnel):
             event.control.text = resources.DISCONNECT
             event.control.style.color = flet.colors.RED
             self.page.client_storage.set("last_tunnel", tunnel.name)
         event.control.update()
+
+    def activate_tunnel(self, tunnel: Tunnel):
+        if not WSManager().connect_tunnel(tunnel):
+            dlg = TunnelErrorDialog(tunnel)
+            dlg.open = True
+            self.page.dialog = dlg
+            self.page.update()
+            return False
+
+        notify(tunnel=tunnel, message=resources.CONNECT_NOTIFY)
+        return True
+
+    def deactivate_tunnel(self, tunnel):
+        WSManager().disconnect_tunnel()
+        notify(tunnel=tunnel, message=resources.DISCONNECT_NOTIFY)

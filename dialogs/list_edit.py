@@ -25,7 +25,7 @@ class ListEditDialog(flet.AlertDialog):
         new_field.focus()
 
     def on_field_blur(self, event: flet.ControlEvent):
-        if not event.control.value:
+        if not event.control.value.strip():
             self.content.controls.remove(event.control)
             self.content.update()
 

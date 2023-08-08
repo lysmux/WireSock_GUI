@@ -1,8 +1,8 @@
 import typing
 
+from models import WGStat, Tunnel
 from utils.config_manager import get_configs_dir
 from utils.logger import Logger
-from models import WGStat, Tunnel
 from wiresock_manager.wg_booster import WGBooster, LogLevel
 
 
@@ -50,6 +50,7 @@ class WSManager:
         if self._handle is not None:
             self.wg_booster.stop_tunnel(self._handle)
             self.wg_booster.drop_tunnel(self._handle)
+            self._handle = None
         self.current_tunnel = None
 
     def set_log_level(self, level: typing.Union[str, LogLevel]):

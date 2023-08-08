@@ -1,8 +1,8 @@
 import flet
 
-from utils import config_manager
 import resources
 from dialogs.list_edit import ListEditDialog
+from utils import config_manager
 
 
 class EditView(flet.UserControl):
@@ -39,8 +39,7 @@ class EditView(flet.UserControl):
             flet.Column([
                 flet.Text(value=resources.DNS),
                 flet.TextField(ref=self.tf_dns, value=str(self.tunnel.interface.dns),
-                               on_focus=self.on_list_field_focus,
-                               data=self.tunnel.interface.dns)
+                               on_focus=self.on_list_field_focus, data=self.tunnel.interface.dns)
             ]),
             flet.Column([
                 flet.Text(value=resources.MTU),
@@ -66,26 +65,22 @@ class EditView(flet.UserControl):
             flet.Column([
                 flet.Text(value=resources.ALLOWED_IPS),
                 flet.TextField(ref=self.tf_allowed_ips, value=str(self.tunnel.peer.allowed_ips),
-                               on_focus=self.on_list_field_focus,
-                               data=self.tunnel.peer.allowed_ips)
+                               on_focus=self.on_list_field_focus, data=self.tunnel.peer.allowed_ips)
             ]),
             flet.Column([
                 flet.Text(value=resources.DISALLOWED_IPS),
                 flet.TextField(ref=self.tf_disallowed_ips, value=str(self.tunnel.peer.disallowed_ips),
-                               on_focus=self.on_list_field_focus,
-                               data=self.tunnel.peer.disallowed_ips)
+                               on_focus=self.on_list_field_focus, data=self.tunnel.peer.disallowed_ips)
             ]),
             flet.Column([
                 flet.Text(value=resources.ALLOWED_APPS),
                 flet.TextField(ref=self.tf_allowed_apps, value=str(self.tunnel.peer.allowed_apps),
-                               on_focus=self.on_list_field_focus,
-                               data=self.tunnel.peer.allowed_apps)
+                               on_focus=self.on_list_field_focus, data=self.tunnel.peer.allowed_apps)
             ]),
             flet.Column([
                 flet.Text(value=resources.DISALLOWED_APPS),
                 flet.TextField(ref=self.tf_disallowed_apps, value=str(self.tunnel.peer.disallowed_apps),
-                               on_focus=self.on_list_field_focus,
-                               data=self.tunnel.peer.disallowed_apps)
+                               on_focus=self.on_list_field_focus, data=self.tunnel.peer.disallowed_apps)
             ]),
             flet.Column([
                 flet.Text(value=resources.PERSISTENCE_KEEPALIVE),
@@ -97,9 +92,7 @@ class EditView(flet.UserControl):
         return flet.Column(
             [
                 flet.ElevatedButton(text=resources.BACK, icon=flet.icons.KEYBOARD_ARROW_LEFT,
-                                    style=flet.ButtonStyle(
-                                        color=flet.colors.LIGHT_BLUE
-                                    ),
+                                    style=flet.ButtonStyle(color=flet.colors.LIGHT_BLUE),
                                     on_click=lambda _: self.page.go("/")),
 
                 flet.Text(value=f"{resources.TUNNEL}: {self.tunnel.name}", weight=flet.FontWeight.BOLD, size=40),
@@ -113,9 +106,7 @@ class EditView(flet.UserControl):
                 peer_grid,
 
                 flet.ElevatedButton(ref=self.btn_save, text=resources.SAVE,
-                                    style=flet.ButtonStyle(
-                                        color=flet.colors.GREEN
-                                    ),
+                                    style=flet.ButtonStyle(color=flet.colors.GREEN),
                                     on_click=self.save)
             ],
         )
