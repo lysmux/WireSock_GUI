@@ -2,15 +2,23 @@ import flet
 from flet_core import TemplateRoute
 
 import resources
+from dialogs.not_installed import NotInstalledDialog
+from utils.misc import get_wiresock_bin
 from views.edit import EditView
 from views.main import MainView
 
 
-def on_startup(page: flet.Page):
-    pass
+def check_startup(page: flet.Page) -> bool:
+    if not get_wiresock_bin():
+        dlg = NotInstalledDialog()
+        dlg.open = True
+        page.dialog = dlg
+        page.update()
+        return False
+    return True
 
 
-def route_change(route: flet.RouteChangeEvent):
+def on_route_change(route: flet.RouteChangeEvent):
     template_route = TemplateRoute(route.route)
 
     route.page.views.clear()
@@ -34,11 +42,10 @@ def route_change(route: flet.RouteChangeEvent):
 
 def main(page: flet.Page):
     page.title = resources.APP_TITLE
+    page.on_route_change = on_route_change
 
-    page.on_route_change = route_change
-    page.go(page.route)
-
-    on_startup(page)
+    if check_startup(page):
+        page.go(page.route)
 
 
 flet.app(main)

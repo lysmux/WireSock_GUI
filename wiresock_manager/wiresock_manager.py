@@ -9,12 +9,12 @@ from wiresock_manager.wg_booster import WGBooster, LogLevel
 class WSManager:
     instance = None
     current_tunnel = None
-
-    wg_booster = WGBooster()
+    wg_booster = None
     _handle = None
 
     def __new__(cls):
         if cls.instance is None:
+            cls.wg_booster = WGBooster()
             cls.instance = super(WSManager, cls).__new__(cls)
         return cls.instance
 
