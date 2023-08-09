@@ -14,7 +14,7 @@ class Peer:
     public_key: str = field(default="")
     pre_shared_key: str = field(default="")
     endpoint: str = field(default="")
-    allowed_ips: list[str] = field(default_factory=lambda: [])
+    allowed_ips: list[str] = field(default_factory=lambda: ["0.0.0.0/0"])
     disallowed_ips: list[str] = field(default_factory=lambda: [])
     allowed_apps: list[str] = field(default_factory=lambda: [])
     disallowed_apps: list[str] = field(default_factory=lambda: [])

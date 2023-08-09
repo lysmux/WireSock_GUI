@@ -8,13 +8,16 @@ TAB_STATISTICS = "Statistics"
 TAB_SETTINGS = "Settings"
 
 ADD = "Add"
+CREATE = "Create"
 UPDATE = "Update"
 EDIT = "Edit"
 CLOSE = "Close"
 
 ADD_TUNNEL = "Add tunnel"
+CREATE_TUNNEL = "Create tunnel"
 EDIT_TUNNEL = "Edit tunnel"
 DELETE_TUNNEL = "Delete tunnel"
+ENTER_TUNNEL_NAME = "Enter tunnel name"
 
 CONNECT = "Connect"
 DISCONNECT = "Disconnect"
@@ -51,6 +54,8 @@ TUNNEL_ACTIVE_CONTENT = "Turn off the tunnel before editing"
 
 VA_MODE_ERROR_TITLE = "Error when changing Virtual adapter mode"
 VA_MODE_ERROR_CONTENT = "Disconnect from tunnel before change Virtual adapter mode"
+
+TUNNEL_CREATE_TITLE = "Create tunnel"
 
 LOG_LEVEL = "Log level"
 

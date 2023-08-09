@@ -5,6 +5,7 @@ import flet
 
 import resources
 from dialogs.tunnel_active import TunnelActiveDialog
+from dialogs.tunnel_create import TunnelCreateDialog
 from dialogs.tunnel_error import TunnelErrorDialog
 from models import Tunnel
 from utils import config_manager
@@ -29,7 +30,11 @@ class ListView(flet.UserControl):
                 flet.Column(ref=self.tunnels_column, scroll=flet.ScrollMode.AUTO, expand=True),
                 flet.ElevatedButton(text=resources.ADD_TUNNEL,
                                     style=flet.ButtonStyle(color=flet.colors.GREEN),
-                                    on_click=lambda _: self.file_picker.pick_files(allowed_extensions=["conf"]))
+                                    on_click=lambda _: self.file_picker.pick_files(allowed_extensions=["conf"])),
+                flet.ElevatedButton(text=resources.CREATE_TUNNEL,
+                                    style=flet.ButtonStyle(color=flet.colors.GREEN),
+                                    on_click=self.create_tunnel
+                                    )
             ]),
             flet.VerticalDivider(width=9, thickness=3),
             flet.Column(ref=self.info_column, scroll=flet.ScrollMode.AUTO, expand=True)
@@ -149,6 +154,12 @@ class ListView(flet.UserControl):
         configs_dir = config_manager.get_configs_dir()
         copy(file.path, configs_dir)
         self.update_tunnels()
+
+    def create_tunnel(self, event: flet.FilePickerResultEvent):
+        dlg = TunnelCreateDialog()
+        dlg.open = True
+        self.page.dialog = dlg
+        self.page.update()
 
     def edit_tunnel(self, event: flet.ControlEvent):
         tunnel = event.control.data
