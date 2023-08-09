@@ -11,7 +11,6 @@ from views.main import MainView
 def check_startup(page: flet.Page) -> bool:
     if not get_wiresock_bin():
         dlg = NotInstalledDialog()
-        dlg.open = True
         page.dialog = dlg
         page.update()
         return False
