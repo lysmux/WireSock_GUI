@@ -39,6 +39,7 @@ DISALLOWED_APPS = "Disallowed apps"
 PERSISTENCE_KEEPALIVE = "Persistence keepalive"
 
 OPTIONAL = "(optional)"
+REQUIRED = "(required)"
 
 SAVE = "Save"
 BACK = "Back"

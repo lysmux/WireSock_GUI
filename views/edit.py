@@ -29,7 +29,8 @@ class EditView(flet.UserControl):
         interface_grid = flet.GridView([
             flet.Column([
                 flet.Text(value=resources.PRIVATE_KEY),
-                flet.TextField(ref=self.tf_private_key, value=self.tunnel.interface.private_key)
+                flet.TextField(ref=self.tf_private_key, value=self.tunnel.interface.private_key,
+                               hint_text=resources.REQUIRED)
             ]),
             flet.Column([
                 flet.Text(value=resources.ADDRESS),
@@ -51,7 +52,7 @@ class EditView(flet.UserControl):
         peer_grid = flet.GridView([
             flet.Column([
                 flet.Text(value=resources.PUBLIC_KEY),
-                flet.TextField(ref=self.tf_public_key, value=self.tunnel.peer.public_key)
+                flet.TextField(ref=self.tf_public_key, value=self.tunnel.peer.public_key, hint_text=resources.REQUIRED)
             ]),
             flet.Column([
                 flet.Text(value=resources.PRESHARED_KEY),
@@ -60,7 +61,7 @@ class EditView(flet.UserControl):
             ]),
             flet.Column([
                 flet.Text(value=resources.ENDPOINT),
-                flet.TextField(ref=self.tf_endpoint, value=self.tunnel.peer.endpoint)
+                flet.TextField(ref=self.tf_endpoint, value=self.tunnel.peer.endpoint, hint_text=resources.REQUIRED)
             ]),
             flet.Column([
                 flet.Text(value=resources.ALLOWED_IPS),
