@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 @dataclass
 class Interface:
     private_key: str = field(default="")
-    address: list[str] = field(default_factory=lambda: [])
+    address: str = field(default="")
     dns: list[str] = field(default_factory=lambda: [])
     mtu: int = field(default=1280)
 

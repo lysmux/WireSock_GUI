@@ -35,7 +35,7 @@ def load_config(config_name: str) -> Tunnel | None:
             case "PrivateKey":
                 interface_config["private_key"] = value
             case "Address":
-                interface_config["address"] = list(map(lambda x: x.strip(), value.split(",")))
+                interface_config["address"] = value
             case "DNS":
                 interface_config["dns"] = list(map(lambda x: x.strip(), value.split(",")))
             case "MTU":
@@ -75,7 +75,7 @@ def save_config(tunnel: Tunnel):
     if tunnel.interface.private_key:
         config.set("Interface", "PrivateKey", tunnel.interface.private_key)
     if tunnel.interface.address:
-        config.set("Interface", "Address", ",".join(tunnel.interface.address))
+        config.set("Interface", "Address", tunnel.interface.address)
     if tunnel.interface.dns:
         config.set("Interface", "DNS", ",".join(tunnel.interface.dns))
     if tunnel.interface.mtu:

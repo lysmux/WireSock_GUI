@@ -34,8 +34,8 @@ class EditView(flet.UserControl):
             ]),
             flet.Column([
                 flet.Text(value=resources.ADDRESS),
-                flet.TextField(ref=self.tf_address, value=str(self.tunnel.interface.address),
-                               on_focus=self.on_list_field_focus, data=self.tunnel.interface.address)
+                flet.TextField(ref=self.tf_address, value=self.tunnel.interface.private_key,
+                               hint_text=resources.REQUIRED)
             ]),
             flet.Column([
                 flet.Text(value=resources.DNS),
@@ -144,7 +144,7 @@ class EditView(flet.UserControl):
 
         if not has_error:
             self.tunnel.interface.private_key = self.tf_private_key.current.value
-            self.tunnel.interface.address = self.tf_address.current.data
+            self.tunnel.interface.address = self.tf_address.current.value
             self.tunnel.interface.dns = self.tf_dns.current.data
             self.tunnel.interface.mtu = int(self.tf_mtu.current.value)
 
