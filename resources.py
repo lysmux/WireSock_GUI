@@ -11,7 +11,9 @@ ADD = "Add"
 CREATE = "Create"
 UPDATE = "Update"
 EDIT = "Edit"
+
 CLOSE = "Close"
+EXIT = "Exit"
 
 ADD_TUNNEL = "Add tunnel"
 CREATE_TUNNEL = "Create tunnel"
@@ -55,6 +57,9 @@ TUNNEL_ACTIVE_CONTENT = "Turn off the tunnel before editing"
 
 VA_MODE_ERROR_TITLE = "Error when changing Virtual adapter mode"
 VA_MODE_ERROR_CONTENT = "Disconnect from tunnel before change Virtual adapter mode"
+
+NOT_INSTALLED_TITLE = "WireSock is not installed"
+NOT_INSTALLED_CONTENT = "Install WireSock before launch this app"
 
 TUNNEL_CREATE_TITLE = "Create tunnel"
 

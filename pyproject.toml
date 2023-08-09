@@ -8,11 +8,12 @@ packages = [{include = "wiresock_gui"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
-flet = "^0.8.4"
+flet = "0.7.4"
 pyinstaller = "^5.13.0"
-winshell = "^0.6"
 windows-toasts = "^0.4.1"
 humanize = "^4.7.0"
+winshell = "^0.6"
+pypiwin32 = "^223"
 
 
 [build-system]
