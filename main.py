@@ -1,7 +1,11 @@
 import flet
 from flet_core import TemplateRoute
+from win32api import GetLastError
+from win32event import CreateMutex
+from winerror import ERROR_ALREADY_EXISTS
 
 import resources
+from dialogs.already_running import AlreadyRunningDialog
 from dialogs.not_installed import NotInstalledDialog
 from utils.misc import get_wiresock_bin
 from views.edit import EditView
@@ -9,6 +13,14 @@ from views.main import MainView
 
 
 def check_startup(page: flet.Page) -> bool:
+    handle = CreateMutex(None, True, 'Global\\WireSockGUI')
+    if GetLastError() == ERROR_ALREADY_EXISTS:  # works only when exe builder
+        handle.Detach()
+        dlg = AlreadyRunningDialog()
+        page.dialog = dlg
+        page.update()
+        return False
+
     if not get_wiresock_bin():
         dlg = NotInstalledDialog()
         page.dialog = dlg
@@ -47,4 +59,5 @@ def main(page: flet.Page):
         page.go(page.route)
 
 
-flet.app(main)
+if __name__ == '__main__':
+    flet.app(main)

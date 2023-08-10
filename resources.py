@@ -61,6 +61,10 @@ VA_MODE_ERROR_CONTENT = "Disconnect from tunnel before change Virtual adapter mo
 NOT_INSTALLED_TITLE = "WireSock is not installed"
 NOT_INSTALLED_CONTENT = "Install WireSock before launch this app"
 
+ALREADY_RUNNING_TITLE = "Already running"
+ALREADY_RUNNING_CONTENT = "Other instance of this application is running"
+
+
 TUNNEL_CREATE_TITLE = "Create tunnel"
 
 LOG_LEVEL = "Log level"
