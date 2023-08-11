@@ -6,8 +6,9 @@ from winerror import ERROR_ALREADY_EXISTS
 
 import resources
 from dialogs.already_running import AlreadyRunningDialog
+from dialogs.new_version import NewVersionDialog
 from dialogs.not_installed import NotInstalledDialog
-from utils.misc import get_wiresock_bin
+from utils.misc import get_wiresock_bin, get_latest_version
 from views.edit import EditView
 from views.main import MainView
 
@@ -20,12 +21,18 @@ def check_startup(page: flet.Page) -> bool:
         page.dialog = dlg
         page.update()
         return False
-
     if not get_wiresock_bin():
         dlg = NotInstalledDialog()
         page.dialog = dlg
         page.update()
         return False
+
+    latest_version = get_latest_version()
+    if latest_version:
+        dlg = NewVersionDialog(latest_version)
+        page.dialog = dlg
+        page.update()
+
     return True
 
 

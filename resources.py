@@ -12,6 +12,8 @@ CREATE = "Create"
 UPDATE = "Update"
 EDIT = "Edit"
 
+DOWNLOAD = "Download"
+
 CLOSE = "Close"
 EXIT = "Exit"
 

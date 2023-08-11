@@ -3,6 +3,7 @@ name = "wiresock_gui"
 version = "0.1.0"
 description = "GUI for the WireSock console application"
 authors = ["KllRaz <kllraz@yandex.ru>"]
+repository = "https://github.com/Kllraz/WireSock_GUI"
 readme = "README.md"
 packages = [{include = "wiresock_gui"}]
 
@@ -14,6 +15,8 @@ windows-toasts = "^0.4.1"
 humanize = "^4.7.0"
 winshell = "^0.6"
 pypiwin32 = "^223"
+toml = "^0.10.2"
+requests = "^2.31.0"
 
 
 [build-system]
